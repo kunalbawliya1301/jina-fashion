@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #111111;
+  --color-primary-hover: #2B2B2B;
+  --color-custom-bg: #FCFAF8;
+  --color-secondary-bg: #F5F1EE;
+  --color-surface: #FFFFFF;
+  --color-brand-accent: #C96A94;
+  --color-accent-hover: #B75884;
+  --color-secondary-accent: #B98A68;
+  --color-border-custom: #E7E1DC;
+  --color-heading: #111111;
+  --color-body-custom: #4B4B4B;
+  --color-muted-custom: #9A9A9A;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-custom-bg);
+    color: var(--color-body-custom);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hide scrollbars but keep scroll functionality */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #C96A94;
+  border-radius: 4px;
+}
+

@@ -1,0 +1,27 @@
+# Deployment
+.vercel
+
+# ── SECURITY: Never commit .env files ──────────────────────────────────────────
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build outputs
+dist/
+server/dist/
+
+# Logs
+*.log
+logs/
+server/logs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
