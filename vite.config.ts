@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 
+import { viteDevApiPlugin } from './src/viteDevApiPlugin'
+
 import siteConfiguration from './.figma/make/site.json'
 
 const isFigmaSandbox = process.env.FIGMA === '1' || process.env.FIGMA === 'true'
@@ -22,6 +24,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    viteDevApiPlugin(),
     figmaSiteConfiguration(siteConfiguration),
     figmaErrorOverlayReplay(),
     figmaReactRefreshBoundaryFallback(),
@@ -37,16 +40,7 @@ export default defineConfig({
     port: parseInt(process.env.PORT || '8443'),
     strictPort: true,
     hmr: isFigmaSandbox ? { clientPort: 443 } : undefined,
-    watch: { ignored: ['**/.figma/**', '**/server/**'] },
-    // ── Dev Proxy: forwards /api requests to the Express backend ──────────
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        secure: false,
-        ws: false,
-      },
-    },
+    watch: { ignored: ['**/.figma/**'] },
   },
   preview: {
     host: '0.0.0.0',
