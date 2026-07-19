@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { Limiters } from './rateLimiter'
 
 /** Vercel serverless handler type */
 export type Handler = (req: VercelRequest, res: VercelResponse) => Promise<void> | void
@@ -71,7 +72,6 @@ export function withSecurity(
 
     // ── Global rate limit ─────────────────────────────────────────────────
     if (!options?.skipRateLimit) {
-      const { Limiters } = await import('./rateLimiter')
       const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 'unknown'
       const result = Limiters.global(ip)
       res.setHeader('RateLimit-Limit', '200')

@@ -16,13 +16,17 @@ export async function connectDB(): Promise<mongoose.Connection> {
     throw new Error('[db] MONGODB_URI is not set in environment variables')
   }
 
-  await mongoose.connect(uri, {
-    maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-  })
-
-  cached = mongoose.connection
-  console.log('[db] MongoDB Atlas connected:', cached.host)
-  return cached
+  try {
+    await mongoose.connect(uri, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 8000,
+      socketTimeoutMS: 45000,
+    })
+    cached = mongoose.connection
+    console.log('[db] MongoDB Atlas connected:', cached.host)
+    return cached
+  } catch (err) {
+    console.error('[db] Failed to connect to MongoDB Atlas:', (err as Error).message)
+    throw new Error(`[db] Connection failed: ${(err as Error).message}`)
+  }
 }
