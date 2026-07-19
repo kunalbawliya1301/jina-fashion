@@ -163,7 +163,6 @@ export default function Admin({ navigate }: Props) {
   // ── Filters & Search ───────────────────────────────────────────────────────
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
-  const [selectedStatus, setSelectedStatus] = useState('All')
 
   // ── Modal State ────────────────────────────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -248,7 +247,6 @@ export default function Admin({ navigate }: Props) {
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.name.trim()) { showToast('Product name is required.', 'error'); return }
-    if (!formData.fabric.trim()) { showToast('Fabric/material is required.', 'error'); return }
     if (!token) { showToast('Session expired. Please sign in again.', 'error'); handleSignOut(); return }
 
     setFormLoading(true)
@@ -329,19 +327,18 @@ export default function Admin({ navigate }: Props) {
   const filteredProducts = products.filter(p => {
     const matchesSearch = searchTerm === '' ||
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.fabric.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.fabric && p.fabric.toLowerCase().includes(searchTerm.toLowerCase())) ||
       p.category.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory
-    const matchesStatus = selectedStatus === 'All' || p.status === selectedStatus
-    return matchesSearch && matchesCategory && matchesStatus
+    return matchesSearch && matchesCategory
   })
 
   const sareesCount   = products.filter(p => p.category === 'Sarees').length
   const lehengasCount = products.filter(p => p.category === 'Lehengas').length
   const suitsCount    = products.filter(p => p.category === 'Suits' || p.category === 'Salwar Suits').length
   const kurtasCount   = products.filter(p => p.category === 'Kurtas').length
+  const dupattasCount = products.filter(p => p.category === 'Dupattas').length
   const featuredCount = products.filter(p => p.featured).length
-  const lowStockCount = products.filter(p => p.status === 'Low Stock' || p.status === 'Out of Stock').length
 
   // ─────────────────────────────────────────────────────────────────────────
   // LOGIN SCREEN
@@ -498,18 +495,19 @@ export default function Admin({ navigate }: Props) {
             </div>
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
             {[
-              { label: 'Total Products', value: products.length, sub: 'Live in Catalog', color: 'text-primary' },
+              { label: 'Total', value: products.length, sub: 'Live Products', color: 'text-primary' },
               { label: 'Sarees', value: sareesCount, sub: 'Designs', color: 'text-primary' },
               { label: 'Lehengas', value: lehengasCount, sub: 'Designs', color: 'text-primary' },
-              { label: 'Suits & Kurtas', value: suitsCount + kurtasCount, sub: 'Designs', color: 'text-primary' },
+              { label: 'Suits', value: suitsCount, sub: 'Designs', color: 'text-primary' },
+              { label: 'Kurtas', value: kurtasCount, sub: 'Designs', color: 'text-primary' },
+              { label: 'Dupattas', value: dupattasCount, sub: 'Designs', color: 'text-primary' },
               { label: 'Featured', value: featuredCount, sub: 'Home Showcase', color: 'text-brand-accent' },
-              { label: 'Low / Pre-Order', value: lowStockCount, sub: 'Attention Req.', color: 'text-amber-600' },
             ].map(metric => (
-              <div key={metric.label} className="bg-surface p-5 rounded-2xl border border-border-custom shadow-xs hover:border-brand-accent/40 transition-colors">
+              <div key={metric.label} className="bg-surface p-4 rounded-2xl border border-border-custom shadow-xs hover:border-brand-accent/40 transition-colors">
                 <span className={`text-[10px] font-bold tracking-widest uppercase block mb-1 ${metric.color}`}>{metric.label}</span>
-                <span className={`font-display text-3xl font-semibold block ${metric.color}`}>
+                <span className={`font-display text-2xl font-semibold block ${metric.color}`}>
                   {productsLoading ? '…' : metric.value}
                 </span>
                 <span className="text-[10px] text-body-custom mt-1 block">{metric.sub}</span>
@@ -530,7 +528,7 @@ export default function Admin({ navigate }: Props) {
                 <svg className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-custom" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <circle cx="11" cy="11" r="8" /><path strokeLinecap="round" d="M21 21l-4.35-4.35" />
                 </svg>
-                <input type="text" placeholder="Search by name, fabric, category…"
+                <input type="text" placeholder="Search by name, category…"
                   value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
                   className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl pl-10 pr-8 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent" />
                 {searchTerm && (
@@ -549,15 +547,6 @@ export default function Admin({ navigate }: Props) {
                   <option value="Dupattas">Dupattas</option>
                 </select>
 
-                <select value={selectedStatus} onChange={e => setSelectedStatus(e.target.value)}
-                  className="bg-secondary-bg/60 border border-border-custom rounded-xl px-3 py-2 text-xs text-primary focus:outline-none focus:border-brand-accent cursor-pointer">
-                  <option value="All">All Statuses</option>
-                  <option value="In Stock">In Stock</option>
-                  <option value="Low Stock">Low Stock</option>
-                  <option value="Pre-Order">Pre-Order</option>
-                  <option value="Out of Stock">Out of Stock</option>
-                </select>
-
                 <span className="text-xs text-muted-custom">
                   {productsLoading ? 'Loading…' : <><b>{filteredProducts.length}</b> / {products.length} products</>}
                 </span>
@@ -571,18 +560,15 @@ export default function Admin({ navigate }: Props) {
                   <tr className="border-b border-border-custom text-[11px] font-bold tracking-widest text-primary uppercase">
                     <th className="py-3 px-3">Product</th>
                     <th className="py-3 px-3">Category</th>
-                    <th className="py-3 px-3">Fabric & MOQ</th>
-                    <th className="py-3 px-3">Price</th>
-                    <th className="py-3 px-3">Status</th>
                     <th className="py-3 px-3 text-center">Featured</th>
                     <th className="py-3 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-custom/60 text-xs">
                   {productsLoading ? (
-                    <tr><td colSpan={7} className="py-12 text-center text-muted-custom">Loading products from server…</td></tr>
+                    <tr><td colSpan={4} className="py-12 text-center text-muted-custom">Loading products from server…</td></tr>
                   ) : filteredProducts.length === 0 ? (
-                    <tr><td colSpan={7} className="py-12 text-center text-muted-custom">No products match your filters.</td></tr>
+                    <tr><td colSpan={4} className="py-12 text-center text-muted-custom">No products match your filters.</td></tr>
                   ) : (
                     filteredProducts.map(product => (
                       <tr key={product.id} className="hover:bg-secondary-bg/40 transition-colors">
@@ -602,19 +588,6 @@ export default function Admin({ navigate }: Props) {
                           <span className="px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-secondary-bg text-primary border border-border-custom">
                             {product.category}
                           </span>
-                        </td>
-                        <td className="py-3.5 px-3">
-                          <div className="font-medium text-body-custom">{product.fabric}</div>
-                          <div className="text-[10px] text-muted-custom">MOQ: {product.moq}</div>
-                        </td>
-                        <td className="py-3.5 px-3 font-semibold text-primary text-xs">{product.wholesalePrice || 'On Request'}</td>
-                        <td className="py-3.5 px-3">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${
-                            product.status === 'In Stock'   ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                            : product.status === 'Low Stock' ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                            : product.status === 'Pre-Order' ? 'bg-blue-100 text-blue-800 border border-blue-200'
-                            : 'bg-rose-100 text-rose-800 border border-rose-200'
-                          }`}>{product.status || 'In Stock'}</span>
                         </td>
                         <td className="py-3.5 px-3 text-center">
                           <button onClick={() => handleToggleFeatured(product.id)}
@@ -672,37 +645,13 @@ export default function Admin({ navigate }: Props) {
                   className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent" />
               </div>
 
-              {/* Category + Fabric */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">Category *</label>
-                  <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent cursor-pointer">
-                    {['Sarees','Lehengas','Suits','Kurtas','Dupattas'].map(c => <option key={c}>{c}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">Fabric / Material *</label>
-                  <input type="text" required placeholder="e.g. Pure Georgette Silk"
-                    value={formData.fabric} onChange={e => setFormData({ ...formData, fabric: e.target.value })}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent" />
-                </div>
-              </div>
-
-              {/* MOQ + Price */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">MOQ</label>
-                  <input type="text" placeholder="e.g. 4 Pcs" value={formData.moq}
-                    onChange={e => setFormData({ ...formData, moq: e.target.value })}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">Wholesale Price</label>
-                  <input type="text" placeholder="e.g. ₹12,500 / pc" value={formData.wholesalePrice}
-                    onChange={e => setFormData({ ...formData, wholesalePrice: e.target.value })}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent" />
-                </div>
+              {/* Category */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">Category *</label>
+                <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}
+                  className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent cursor-pointer">
+                  {['Sarees','Lehengas','Suits','Kurtas','Dupattas'].map(c => <option key={c}>{c}</option>)}
+                </select>
               </div>
 
               {/* Image Upload */}
@@ -775,23 +724,14 @@ export default function Admin({ navigate }: Props) {
                   className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent resize-none" />
               </div>
 
-              {/* Status + Featured */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-primary mb-1">Stock Status</label>
-                  <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value as typeof formData.status })}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent cursor-pointer">
-                    {(['In Stock','Low Stock','Pre-Order','Out of Stock'] as const).map(s => <option key={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div className="flex items-center gap-3 sm:pt-4">
-                  <input type="checkbox" id="featuredCheck" checked={formData.featured}
-                    onChange={e => setFormData({ ...formData, featured: e.target.checked })}
-                    className="w-4 h-4 accent-brand-accent rounded cursor-pointer" />
-                  <label htmlFor="featuredCheck" className="text-xs font-semibold text-primary cursor-pointer select-none">
-                    Feature on Homepage
-                  </label>
-                </div>
+              {/* Featured */}
+              <div className="flex items-center gap-3 pt-2">
+                <input type="checkbox" id="featuredCheck" checked={formData.featured}
+                  onChange={e => setFormData({ ...formData, featured: e.target.checked })}
+                  className="w-4 h-4 accent-brand-accent rounded cursor-pointer" />
+                <label htmlFor="featuredCheck" className="text-xs font-semibold text-primary cursor-pointer select-none">
+                  Feature on Homepage
+                </label>
               </div>
 
               {/* Action buttons */}
