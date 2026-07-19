@@ -16,8 +16,9 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
 
   // ── GET /api/products/:id — public ────────────────────────────────────────
   if (req.method === 'GET') {
-    const product = await Product.findById(id).lean()
-    if (!product) { fail(res, 'Product not found.', 404); return }
+    const productDoc = await Product.findById(id).lean()
+    if (!productDoc) { fail(res, 'Product not found.', 404); return }
+    const product = { ...productDoc, id: String(productDoc._id) }
     ok(res, { product })
     return
   }
@@ -49,8 +50,9 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
       updates['featured'] = updates['featured'] === true || updates['featured'] === 'true'
     }
 
-    const product = await Product.findByIdAndUpdate(id, { $set: updates }, { new: true, runValidators: true }).lean()
-    if (!product) { fail(res, 'Product not found.', 404); return }
+    const productDoc = await Product.findByIdAndUpdate(id, { $set: updates }, { new: true, runValidators: true }).lean()
+    if (!productDoc) { fail(res, 'Product not found.', 404); return }
+    const product = { ...productDoc, id: String(productDoc._id) }
 
     ok(res, { message: 'Product updated.', product })
     return

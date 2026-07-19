@@ -48,7 +48,12 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
       Product.countDocuments(filter),
     ])
 
-    ok(res, { total, page, pages: Math.ceil(total / limit), limit, products })
+    const formattedProducts = products.map(p => ({
+      ...p,
+      id: String((p as any)._id),
+    }))
+
+    ok(res, { total, page, pages: Math.ceil(total / limit), limit, products: formattedProducts })
     return
   }
 
@@ -65,23 +70,28 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
     const body = sanitize(req.body as Record<string, unknown>)
     const { name, category, fabric, moq, wholesalePrice, description, src, cloudinaryPublicId, status, featured } = body
 
-    if (!name || !category || !fabric || !src) {
-      fail(res, 'name, category, fabric, and src are required.', 400)
+    if (!name || !category || !src) {
+      fail(res, 'name, category, and src are required.', 400)
       return
     }
 
-    const product = await Product.create({
+    const productDoc = await Product.create({
       name:               String(name).trim().slice(0, 200),
       category:           category as 'Sarees' | 'Lehengas' | 'Suits' | 'Kurtas' | 'Dupattas',
-      fabric:             String(fabric).trim().slice(0, 200),
-      moq:                moq              ? String(moq).trim().slice(0, 100)              : undefined,
-      wholesalePrice:     wholesalePrice   ? String(wholesalePrice).trim().slice(0, 100)   : undefined,
+      fabric:             fabric ? String(fabric).trim().slice(0, 200) : 'Standard',
+      moq:                moq              ? String(moq).trim().slice(0, 100)              : '4 Pcs',
+      wholesalePrice:     wholesalePrice   ? String(wholesalePrice).trim().slice(0, 100)   : 'Quote on Request',
       description:        description      ? String(description).trim().slice(0, 2000)     : '',
       src:                String(src).trim(),
       cloudinaryPublicId: cloudinaryPublicId ? String(cloudinaryPublicId).trim()           : '',
       status:             (status || 'In Stock') as 'In Stock' | 'Low Stock' | 'Pre-Order' | 'Out of Stock',
       featured:           featured === true || featured === 'true',
     })
+
+    const product = {
+      ...productDoc.toJSON(),
+      id: String(productDoc._id),
+    }
 
     ok(res, { message: 'Product created.', product }, 201)
     return
