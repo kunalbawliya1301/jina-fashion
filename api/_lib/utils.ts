@@ -88,12 +88,12 @@ export function withSecurity(
     } catch (err) {
       const e = err as AppError
       const status = e.statusCode || 500
-      const isDev = process.env.NODE_ENV !== 'production'
       console.error(`[${req.method}] ${req.url} → ${status}:`, e.message)
-      fail(res, e.message || 'Unexpected error', status, {
-        ...(e.code ? { code: e.code } : {}),
-        ...(isDev && status >= 500 ? { stack: e.stack } : {}),
-      })
+      if (!res.headersSent) {
+        fail(res, e.message || 'Unexpected error', status, {
+          ...(e.code ? { code: e.code } : {}),
+        })
+      }
     }
   }
 }
