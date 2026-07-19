@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import nodemailer from 'nodemailer'
 
 export interface ContactEmailData {
@@ -14,21 +15,23 @@ export interface ContactEmailData {
 export async function sendInquiryEmails(data: ContactEmailData): Promise<void> {
   const user = process.env.EMAIL_USER
   const pass = process.env.EMAIL_PASS
-  const recipient = process.env.EMAIL_TO || user || 'wholesale@jinafashion.com'
+  const recipient = process.env.EMAIL_TO || user || 'order.jinafashion@gmail.com'
 
   if (!user || !pass) {
-    console.warn('[email] EMAIL_USER or EMAIL_PASS missing. Skipping email dispatch.')
-    return
+    console.warn(`[email] EMAIL_USER (${user || 'empty'}) or EMAIL_PASS (${pass ? 'set' : 'empty'}) missing. Skipping email dispatch.`)
+    throw new Error('Email credentials (EMAIL_USER/EMAIL_PASS) are not configured in environment variables.')
   }
+
+  const cleanPass = pass.replace(/\s+/g, '').replace(/["']/g, '')
+
+  console.log(`[email] Connecting to Gmail SMTP for user: ${user} -> sending to: ${recipient}`)
 
   // Create Gmail SMTP transporter
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // SSL
+    service: 'gmail',
     auth: {
       user: user.trim(),
-      pass: pass.replace(/\s+/g, ''), // Strip spaces from Google App Password
+      pass: cleanPass,
     },
   })
 
