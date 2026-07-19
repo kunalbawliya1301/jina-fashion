@@ -135,7 +135,7 @@ export default function WireFooter({ navigate }: Props) {
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">Mail:</span>
-                <a href="mailto:wholesale@jinafashion.com" className="hover:text-brand-accent transition-colors">wholesale@jinafashion.com</a>
+                <a href="mailto:order.jinafashion@gmail.com" className="hover:text-brand-accent transition-colors">order.jinafashion@gmail.com</a>
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">WA:</span>
