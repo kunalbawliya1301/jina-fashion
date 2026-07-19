@@ -80,23 +80,46 @@ export default function Contact() {
     }
   ]
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({
-        name: '',
-        business: '',
-        phone: '',
-        email: '',
-        city: '',
-        interest: 'Sarees',
-        message: '',
-        quantity: '100 - 500 Pcs',
-        updates: true
+    setLoading(true)
+    setErrorMessage(null)
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       })
-    }, 4000)
+
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to submit inquiry')
+      }
+
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setFormData({
+          name: '',
+          business: '',
+          phone: '',
+          email: '',
+          city: '',
+          interest: 'Sarees',
+          message: '',
+          quantity: '100 - 500 Pcs',
+          updates: true,
+        })
+      }, 5000)
+    } catch (err) {
+      setErrorMessage((err as Error).message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -324,12 +347,21 @@ export default function Contact() {
                       </label>
                     </div>
 
+                    {errorMessage && (
+                      <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
+
                     <div className="pt-2">
                       <button
                         type="submit"
-                        className="w-full bg-primary hover:bg-primary-hover text-surface text-center py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-[12px] cursor-pointer transition-colors shadow-sm"
+                        disabled={loading}
+                        className="w-full bg-primary hover:bg-primary-hover disabled:opacity-60 disabled:cursor-not-allowed text-surface text-center py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-[12px] cursor-pointer transition-colors shadow-sm flex items-center justify-center gap-2"
                       >
-                        Submit Inquiry
+                        {loading && <div className="w-4 h-4 border-2 border-surface/40 border-t-surface rounded-full animate-spin" />}
+                        {loading ? 'Dispatching Inquiry…' : 'Submit Inquiry'}
                       </button>
                     </div>
 

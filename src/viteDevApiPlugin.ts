@@ -64,6 +64,10 @@ export function viteDevApiPlugin(): Plugin {
             const mod = await server.ssrLoadModule('./api/auth/logout.ts')
             return await mod.default(req, res)
           }
+          if (pathname === '/api/contact') {
+            const mod = await server.ssrLoadModule('./api/contact.ts')
+            return await mod.default(req, res)
+          }
           if (pathname === '/api/products') {
             const mod = await server.ssrLoadModule('./api/products/index.ts')
             return await mod.default(req, res)
