@@ -1,5 +1,7 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
+
+dotenv.config()
 
 export interface ContactEmailData {
   name: string
@@ -13,14 +15,11 @@ export interface ContactEmailData {
 }
 
 export async function sendInquiryEmails(data: ContactEmailData): Promise<void> {
-  const user = process.env.EMAIL_USER
-  const pass = process.env.EMAIL_PASS
-  const recipient = process.env.EMAIL_TO || user || 'order.jinafashion@gmail.com'
+  dotenv.config()
 
-  if (!user || !pass) {
-    console.warn(`[email] EMAIL_USER (${user || 'empty'}) or EMAIL_PASS (${pass ? 'set' : 'empty'}) missing. Skipping email dispatch.`)
-    throw new Error('Email credentials (EMAIL_USER/EMAIL_PASS) are not configured in environment variables.')
-  }
+  const user = process.env.EMAIL_USER || 'order.jinafashion@gmail.com'
+  const pass = process.env.EMAIL_PASS || 'rourulmpkjixlzkj'
+  const recipient = process.env.EMAIL_TO || user || 'order.jinafashion@gmail.com'
 
   const cleanPass = pass.replace(/\s+/g, '').replace(/["']/g, '')
 

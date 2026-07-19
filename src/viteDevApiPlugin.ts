@@ -1,5 +1,7 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import type { Plugin, ViteDevServer } from 'vite'
+
+dotenv.config()
 
 /**
  * Dev API Router Plugin: dynamically executes Vercel serverless handlers on-demand during local dev
@@ -9,6 +11,7 @@ export function viteDevApiPlugin(): Plugin {
     name: 'dev-api-router',
     configureServer(server: ViteDevServer) {
       server.middlewares.use(async (req: any, res: any, next: () => void) => {
+        dotenv.config({ override: true })
         const urlStr = req.url || ''
         if (!urlStr.startsWith('/api')) {
           return next()
