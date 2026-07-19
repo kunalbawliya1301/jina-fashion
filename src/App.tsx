@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import WireNav from './components/WireNav'
 import WireFooter from './components/WireFooter'
 import Home from './pages/Home'
@@ -12,6 +12,10 @@ export type Page = 'home' | 'about' | 'collections' | 'contact' | 'admin'
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [page])
 
   const renderPage = () => {
     switch (page) {
