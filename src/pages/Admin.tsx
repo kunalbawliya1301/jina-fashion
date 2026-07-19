@@ -372,7 +372,7 @@ export default function Admin({ navigate }: Props) {
               <label className="block text-[11px] font-bold uppercase tracking-wider text-primary mb-1">Admin Email</label>
               <input
                 type="email" required autoComplete="username"
-                placeholder="admin@jinafashion.com"
+                placeholder="order.jinafashion@gmail.com"
                 value={loginEmail}
                 onChange={e => setLoginEmail(e.target.value)}
                 className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-3 text-xs text-primary focus:outline-none focus:border-brand-accent"

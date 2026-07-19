@@ -20,9 +20,8 @@ export function ok(res: VercelResponse, data: Record<string, unknown>, status = 
  */
 export function fail(res: VercelResponse, message: string, status = 500, extra?: Record<string, unknown>): void {
   // In production, never leak internal messages for 5xx errors
-  const isDev = process.env.NODE_ENV !== 'production'
-  const msg = status >= 500 && !isDev ? 'Internal Server Error' : message
-  res.status(status).json({ success: false, message: msg, ...extra })
+  // Always show message so clients can display meaningful errors
+  res.status(status).json({ success: false, message, ...extra })
 }
 
 /**
@@ -44,13 +43,21 @@ export function withSecurity(
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
 
     // ── CORS ──────────────────────────────────────────────────────────────
-    const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,http://localhost:8443')
+    // Allow: configured origins + any Vercel preview/production URL
+    const configuredOrigins = (process.env.ALLOWED_ORIGINS || '')
       .split(',')
       .map(o => o.trim())
+      .filter(Boolean)
 
     const origin = req.headers['origin'] as string | undefined
-    if (!origin || allowedOrigins.includes(origin)) {
-      if (origin) res.setHeader('Access-Control-Allow-Origin', origin)
+    const isAllowed =
+      !origin ||
+      origin.includes('localhost') ||
+      origin.endsWith('.vercel.app') ||
+      configuredOrigins.includes(origin)
+
+    if (isAllowed) {
+      res.setHeader('Access-Control-Allow-Origin', origin || '*')
     }
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization')
