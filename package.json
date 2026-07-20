@@ -2,14 +2,13 @@
   "name": "figma-make-app",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "format": "oxfmt",
-    "seed:admin": "node scripts/seed-admin.js",
-    "seed:products": "node scripts/seed-products.js"
+    "seed:admin": "node scripts/seed-admin.mjs",
+    "seed:products": "node scripts/seed-products.mjs"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",
