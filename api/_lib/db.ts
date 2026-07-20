@@ -18,10 +18,9 @@ export async function connectDB(): Promise<mongoose.Connection> {
 
   try {
     await mongoose.connect(uri, {
-      maxPoolSize: 10,
       serverSelectionTimeoutMS: 8000,
       socketTimeoutMS: 45000,
-    })
+    } as mongoose.ConnectOptions)
     cached = mongoose.connection
     console.log('[db] MongoDB Atlas connected:', cached.host)
     return cached
