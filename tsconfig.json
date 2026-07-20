@@ -20,6 +20,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false
   },
-  "include": ["src"],
+  "include": ["src", "api"],
   "exclude": ["src/viteDevApiPlugin.ts", "node_modules", "dist"]
 }
