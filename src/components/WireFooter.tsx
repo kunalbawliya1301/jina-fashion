@@ -144,7 +144,17 @@ export default function WireFooter({ navigate }: Props) {
 
         {/* Bottom copyright bar */}
         <div className="border-t border-border-custom pt-6 sm:pt-8 flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
-          <span className="text-[11px] text-muted-custom">© 2026 Jina Fashion. All rights reserved.</span>
+          <span className="text-[11px] text-muted-custom">
+            © 2026 Jina Fashion. All rights reserved. | Designed &amp; Developed with <span className="text-red-500">♥</span> by{' '}
+            <a
+              href="https://kunalbawliya.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-heading hover:text-brand-accent transition-colors"
+            >
+              Kunal Bawliya
+            </a>
+          </span>
           <div className="flex gap-6">
             {['Privacy Policy', 'Terms of Use'].map(l => (
               <a key={l} href="#" className="text-[11px] text-muted-custom hover:text-brand-accent transition-colors">{l}</a>

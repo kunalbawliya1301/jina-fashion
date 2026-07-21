@@ -193,7 +193,7 @@ export default function Home({ navigate }: Props) {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Text details */}
-            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
+            <div className="lg:col-span-7 flex flex-col space-y-6 order-2 lg:order-1">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-px bg-brand-accent" />
                 <span className="text-[10px] tracking-[0.2em] font-semibold uppercase text-brand-accent">About Jina Fashion</span>
@@ -208,11 +208,9 @@ export default function Home({ navigate }: Props) {
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
                 We work directly with master weavers across textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades with distinct colors and comfort.
               </p>
-              <div className="pt-2">
-                <WireBtn label="Learn More About Us" variant="outline" onClick={() => navigate('about')} />
-              </div>
               
-              <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 border-t border-border-custom">
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-2">
                 {[
                   ['15+', 'Years Legacy'],
                   ['500+', 'Active Designs'],
@@ -223,6 +221,11 @@ export default function Home({ navigate }: Props) {
                     <div className="text-[10px] sm:text-xs tracking-wider text-muted-custom uppercase font-medium">{label}</div>
                   </div>
                 ))}
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-2 flex justify-center sm:justify-start">
+                <WireBtn label="Learn More About Us" variant="outline" onClick={() => navigate('about')} />
               </div>
             </div>
 
@@ -518,7 +521,7 @@ export default function Home({ navigate }: Props) {
             </div>
             
             <h2 className="font-display text-3xl sm:text-4xl text-surface font-normal leading-tight">
-              Grow Your Retail <br />
+              Grow Your Retail <br className="sm:hidden" />
               Business With <br />
               <span className="italic text-brand-accent font-normal">Premium Indian Wear</span>
             </h2>
