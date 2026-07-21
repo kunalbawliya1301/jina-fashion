@@ -518,7 +518,8 @@ export default function Home({ navigate }: Props) {
             </div>
             
             <h2 className="font-display text-3xl sm:text-4xl text-surface font-normal leading-tight">
-              Grow Your Retail Business With <br />
+              Grow Your Retail <br />
+              Business With <br />
               <span className="italic text-brand-accent font-normal">Premium Indian Wear</span>
             </h2>
             <p className="text-sm text-neutral-300 leading-relaxed max-w-xl mx-auto font-sans">
