@@ -1,19 +1,12 @@
 import type { Page } from '../App'
 import { ImgBox, SectionWrapper } from '../components/Wire'
+import SocialSection from '../components/SocialSection'
 
 interface Props {
   navigate: (p: Page) => void
 }
 
 export default function About({ navigate }: Props) {
-  const igImages = [
-    'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1631857455684-a54a2f03665f?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=350',
-  ]
 
   return (
     <div className="space-y-0 animate-fade-in">
@@ -43,7 +36,7 @@ export default function About({ navigate }: Props) {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Text details */}
-            <div className="lg:col-span-6 space-y-6 order-2 lg:order-1">
+            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-px bg-brand-accent" />
                 <span className="text-[10px] tracking-[0.2em] font-semibold uppercase text-brand-accent">Who We Are</span>
@@ -73,11 +66,11 @@ export default function About({ navigate }: Props) {
             </div>
 
             {/* Single Showcase Image */}
-            <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center">
+            <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
               <ImgBox 
-                className="w-full max-w-xs sm:max-w-sm lg:max-w-[380px] shadow-md rounded-[16px]" 
+                className="w-full max-w-xs sm:max-w-sm lg:max-w-[360px] shadow-md rounded-[16px]" 
                 aspect="3/4" 
-                src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=800" 
+                src="/About Us Page/Who We Are.png" 
                 label="HERITAGE SHOWROOM" 
                 alt="Jina Fashion designer boutique showroom"
               />
@@ -106,17 +99,17 @@ export default function About({ navigate }: Props) {
               {[
                 {
                   title: 'Heritage Weaving',
-                  src: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=600',
+                  src: '/About Us Page/OH-1.png',
                   desc: 'Handloom clusters from Varanasi and Chanderi.'
                 },
                 {
                   title: 'Artisanal Detailing',
-                  src: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600',
+                  src: '/About Us Page/OH-2.png',
                   desc: 'Genuine zari cords and hand-tied zardosi embroidery.'
                 },
                 {
                   title: 'Modern Tailoring',
-                  src: 'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=600',
+                  src: '/About Us Page/OH-3.png',
                   desc: 'Industrial quality control checks before bulk packing.'
                 }
               ].map((item, i) => (
@@ -206,44 +199,7 @@ export default function About({ navigate }: Props) {
       </SectionWrapper>
 
       {/* ── INSTAGRAM PREVIEW ── */}
-      <SectionWrapper label="INSTAGRAM PREVIEW">
-        <div className="bg-secondary-bg py-16 sm:py-20 lg:py-24">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12 max-w-md mx-auto space-y-2">
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-8 h-px bg-border-custom" />
-                <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Follow @jinafashion</span>
-                <div className="w-8 h-px bg-border-custom" />
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Campaign Spreads on Socials</h2>
-            </div>
-            
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-4 mb-8">
-              {igImages.map((src, i) => (
-                <div key={i} className="group relative overflow-hidden rounded-[12px] shadow-sm">
-                  <ImgBox 
-                    className="w-full h-full" 
-                    aspect="1/1" 
-                    src={src} 
-                    label={`IG LOOK ${i + 1}`} 
-                    alt={`Saree styling photography IG look ${i + 1}`} 
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-block border border-primary px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-primary hover:bg-primary hover:text-surface transition-all duration-300 rounded-[12px] bg-surface cursor-pointer shadow-sm hover:shadow"
-              >
-                Follow on Instagram
-              </a>
-            </div>
-          </div>
-        </div>
-      </SectionWrapper>
+      <SocialSection />
     </div>
   )
 }

@@ -2,8 +2,8 @@ import { useState, useRef } from 'react'
 import type { Page } from '../App'
 import { ImgBox, WireBtn, SectionWrapper } from '../components/Wire'
 import HeroWireframe from '../components/home/HeroWireframe'
+import SocialSection from '../components/SocialSection'
 import { useProducts } from '../context/ProductContext'
-import { useSocial } from '../context/SocialContext'
 
 interface Props {
   navigate: (p: Page) => void
@@ -11,7 +11,6 @@ interface Props {
 
 export default function Home({ navigate }: Props) {
   const { products: allProducts } = useProducts()
-  const { items: socialItems } = useSocial()
   const tickerRef = useRef<HTMLDivElement>(null)
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0)
   const isProgrammaticScroll = useRef(false)
@@ -185,15 +184,6 @@ export default function Home({ navigate }: Props) {
     },
   ]
 
-  const igImages = [
-    'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1631857455684-a54a2f03665f?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=350',
-  ]
-
   return (
     <div className="space-y-0">
       <HeroWireframe navigate={navigate} />
@@ -202,18 +192,8 @@ export default function Home({ navigate }: Props) {
       <SectionWrapper label="ABOUT PREVIEW">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-            {/* Image */}
-            <div className="lg:col-span-4 flex justify-center">
-              <ImgBox 
-                className="w-full max-w-xs sm:max-w-sm lg:max-w-[320px] shadow-md rounded-[16px]" 
-                aspect="3/4" 
-                src="/Home Page/About Section.png" 
-                label="Craftsman Loom" 
-                alt="Artisanal loom and thread craft styling"
-              />
-            </div>
             {/* Text details */}
-            <div className="lg:col-span-8 space-y-6">
+            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-px bg-brand-accent" />
                 <span className="text-[10px] tracking-[0.2em] font-semibold uppercase text-brand-accent">About Jina Fashion</span>
@@ -223,10 +203,10 @@ export default function Home({ navigate }: Props) {
                 For Modern Boutiques & Retailers
               </h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                For over fifteen years, Jina Fashion has stood at the intersection of traditional handloom artistry and contemporary silhouettes. Headquartered in Mumbai, we manufacture women's ethnic wear that honors age-old craftsmanship while catering to the fast-paced demand of retail stores globally.
+                For over fifteen years, Jina Fashion has stood at the intersection of traditional handloom artistry and contemporary silhouettes. Headquartered in Mumbai, we manufacture women's ethnic wear catering to the demand of retail stores globally.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                We work directly with artisanal weavers across major textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades that ensure premium drape, absolute comfort, and distinct colors.
+                We work directly with master weavers across textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades with distinct colors and comfort.
               </p>
               <div className="pt-2">
                 <WireBtn label="Learn More About Us" variant="outline" onClick={() => navigate('about')} />
@@ -244,6 +224,17 @@ export default function Home({ navigate }: Props) {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Showcase Image */}
+            <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
+              <ImgBox 
+                className="w-full max-w-xs sm:max-w-sm lg:max-w-[360px] shadow-md rounded-[16px]" 
+                aspect="3/4" 
+                src="/Home Page/About Section.png" 
+                label="Craftsman Loom" 
+                alt="Artisanal loom and thread craft styling"
+              />
             </div>
           </div>
         </div>
@@ -514,87 +505,7 @@ export default function Home({ navigate }: Props) {
       </SectionWrapper>
 
       {/* ── INSTAGRAM PREVIEW ── */}
-      <SectionWrapper label="INSTAGRAM PREVIEW">
-        <div className="bg-secondary-bg py-16 sm:py-20 lg:py-24">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12 max-w-md mx-auto space-y-2">
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-8 h-px bg-border-custom" />
-                <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Follow @jinafashion</span>
-                <div className="w-8 h-px bg-border-custom" />
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Campaign Spreads on Socials</h2>
-            </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
-              {socialItems.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.link || 'https://instagram.com'}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative overflow-hidden rounded-[16px] shadow-sm border border-border-custom bg-surface block aspect-[9/16] transition-all duration-300 hover:shadow-lg hover:border-brand-accent/60"
-                >
-                  {item.type === 'video' ? (
-                    <video
-                      src={item.src}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <img
-                      src={item.src}
-                      alt={item.title || 'Campaign Look'}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  )}
-
-                  {/* Top Badge: Video Reel / Image indicator */}
-                  <div className="absolute top-2.5 right-2.5 bg-black/50 backdrop-blur-xs text-surface text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-medium z-10">
-                    {item.type === 'video' ? (
-                      <>
-                        <svg className="w-3 h-3 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-                        </svg>
-                        <span>REEL</span>
-                      </>
-                    ) : (
-                      <svg className="w-3 h-3 text-surface/80" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3" />
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                      </svg>
-                    )}
-                  </div>
-
-                  {/* Gradient Overlay & Title */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 text-surface">
-                    <p className="text-[11px] font-semibold tracking-wide leading-tight drop-shadow-sm">
-                      {item.title}
-                    </p>
-                    <span className="text-[9px] text-brand-accent tracking-widest uppercase font-bold mt-1">
-                      View on IG →
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <div className="text-center">
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-block border border-primary px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-primary hover:bg-primary hover:text-surface transition-all duration-300 rounded-[12px] bg-surface cursor-pointer shadow-sm hover:shadow"
-              >
-                Follow on Instagram
-              </a>
-            </div>
-          </div>
-        </div>
-      </SectionWrapper>
+      <SocialSection />
 
       {/* ── CONTACT CTA BANNER ── */}
       <SectionWrapper label="CONTACT CTA BANNER">

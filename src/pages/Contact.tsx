@@ -179,32 +179,6 @@ export default function Contact() {
                   </div>
                 ))}
               </div>
-
-              {/* WhatsApp card */}
-              <div className="bg-primary text-surface p-6 sm:p-8 rounded-[12px] shadow-md space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-[8px] bg-neutral-800 flex items-center justify-center shrink-0">
-                    <svg className="w-6 h-6 text-brand-accent" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.982L2 22l5.233-1.371a9.994 9.994 0 004.778 1.205h.004c5.505 0 9.989-4.478 9.99-9.984a9.965 9.965 0 00-2.92-7.063A9.966 9.966 0 0012.012 2zm5.835 14.165c-.32.9-1.845 1.637-2.536 1.742-.69.105-1.547.19-4.577-.962-3.882-1.478-6.393-5.398-6.586-5.653-.193-.255-1.547-2.037-1.547-3.878 0-1.84.965-2.747 1.31-3.1.345-.353.9-.51 1.39-.51.162 0 .307.009.434.017.373.024.56.04.805.586.255.57.87 2.115.945 2.27.076.155.127.336.026.544-.1.21-.2.34-.396.574-.197.234-.413.527-.588.707-.197.202-.405.422-.172.825.233.402.936 1.54 2.01 2.49 1.385 1.226 2.55 1.607 2.915 1.76.365.153.58.127.794-.12.214-.247.925-1.077 1.173-1.448.247-.37.495-.31.833-.185.337.125 2.146 1.01 2.507 1.19.362.18.6.27.69.424.09.155.09 1.025-.23 1.925z"></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-display text-lg font-normal text-surface">Instant Support via WhatsApp</h3>
-                    <p className="text-[10px] text-neutral-300 font-sans mt-0.5 tracking-wider uppercase">Direct connection to Trade desk</p>
-                  </div>
-                </div>
-                <p className="text-xs text-neutral-300 font-sans leading-relaxed">
-                  Have a quick catalog detail or order question? Click below to chat directly with our trade managers on WhatsApp.
-                </p>
-                <a
-                  href="https://wa.me/919876543210"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block text-center w-full bg-surface hover:bg-neutral-100 text-primary py-3 text-xs font-semibold tracking-[0.2em] uppercase rounded-[12px] transition-colors cursor-pointer"
-                >
-                  Chat on WhatsApp
-                </a>
-              </div>
             </div>
 
             {/* Right: inquiry form */}
@@ -232,7 +206,9 @@ export default function Contact() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Full Name</label>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          Full Name <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
                         <input
                           type="text"
                           required
@@ -244,7 +220,9 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Business Name</label>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          Business Name <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
                         <input
                           type="text"
                           required
@@ -256,7 +234,9 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Phone Number</label>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          Phone Number <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
                         <input
                           type="tel"
                           required
@@ -268,7 +248,9 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Email Address</label>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          Email Address <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
                         <input
                           type="email"
                           required
@@ -280,7 +262,9 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">City</label>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          City <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
                         <input
                           type="text"
                           required
@@ -292,24 +276,35 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Category Interest</label>
-                        <select
-                          value={formData.interest}
-                          onChange={(e) => setFormData({...formData, interest: e.target.value})}
-                          className="w-full px-4 py-2.5 text-sm bg-custom-bg border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom transition-all cursor-pointer font-semibold shadow-sm"
-                        >
-                          <option value="Cord Sets">Cord Sets Range</option>
-                          <option value="Dupatta Set">Dupatta Set Range</option>
-                          <option value="Kurties">Kurties Range</option>
-                          <option value="Pant/Plazzo set">Pant/Plazzo set Range</option>
-                          <option value="Short Tops">Short Tops Range</option>
-                        </select>
+                        <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                          Category Interest <span className="text-rose-500 font-bold ml-0.5">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={formData.interest}
+                            onChange={(e) => setFormData({...formData, interest: e.target.value})}
+                            className="w-full px-4 py-2.5 pr-10 text-sm bg-custom-bg border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom transition-all cursor-pointer font-semibold shadow-xs appearance-none"
+                          >
+                            <option value="Cord Sets">Cord Sets Range</option>
+                            <option value="Dupatta Set">Dupatta Set Range</option>
+                            <option value="Kurties">Kurties Range</option>
+                            <option value="Pant/Plazzo set">Pant/Plazzo set Range</option>
+                            <option value="Short Tops">Short Tops Range</option>
+                          </select>
+                          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-primary/70">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                            </svg>
+                          </div>
+                        </div>
                       </div>
 
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Quantity Requirement / Description</label>
+                      <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                        Quantity Requirement / Description <span className="text-rose-500 font-bold ml-0.5">*</span>
+                      </label>
                       <textarea
                         required
                         rows={4}
@@ -321,17 +316,26 @@ export default function Contact() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold tracking-wider text-primary uppercase">Estimated Monthly Order Volume</label>
-                      <select
-                        value={formData.quantity}
-                        onChange={(e) => setFormData({...formData, quantity: e.target.value})}
-                        className="w-full px-4 py-2.5 text-sm bg-custom-bg border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom transition-all cursor-pointer font-semibold shadow-sm"
-                      >
-                        <option value="Under 100 Pcs">Under 100 Pieces / Month</option>
-                        <option value="100 - 500 Pcs">100 to 500 Pieces / Month</option>
-                        <option value="500 - 1000 Pcs">500 to 1,000 Pieces / Month</option>
-                        <option value="Above 1000 Pcs">Above 1,000 Pieces / Month</option>
-                      </select>
+                      <label className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                        Estimated Monthly Order Volume <span className="text-rose-500 font-bold ml-0.5">*</span>
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={formData.quantity}
+                          onChange={(e) => setFormData({...formData, quantity: e.target.value})}
+                          className="w-full px-4 py-2.5 pr-10 text-sm bg-custom-bg border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom transition-all cursor-pointer font-semibold shadow-xs appearance-none"
+                        >
+                          <option value="Under 100 Pcs">Under 100 Pieces / Month</option>
+                          <option value="100 - 500 Pcs">100 to 500 Pieces / Month</option>
+                          <option value="500 - 1000 Pcs">500 to 1,000 Pieces / Month</option>
+                          <option value="Above 1000 Pcs">Above 1,000 Pieces / Month</option>
+                        </select>
+                        <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-primary/70">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+                          </svg>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="flex items-start gap-3">
@@ -379,34 +383,72 @@ export default function Contact() {
         </div>
       </SectionWrapper>
 
-      {/* ── GOOGLE MAPS ── */}
-      <SectionWrapper label="GOOGLE MAPS PLACEHOLDER">
-        <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden flex items-center justify-center">
-          <img
-            src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=1600"
-            alt="HQ location mockup"
-            className="absolute inset-0 w-full h-full object-cover opacity-60"
-          />
-          <div className="absolute inset-0 bg-primary/45" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-primary/50 to-primary/80" />
-          
-          <div className="relative z-10 bg-surface border border-border-custom p-6 sm:p-8 rounded-[12px] shadow-lg max-w-sm mx-4 space-y-4 text-center">
-            <div className="w-12 h-12 rounded-full bg-secondary-bg flex items-center justify-center mx-auto">
-              <svg className="w-6 h-6 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.688A1.125 1.125 0 003 6.694v11.215c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"></path>
-              </svg>
+      {/* ── GOOGLE MAPS EMBED ── */}
+      <SectionWrapper label="GOOGLE MAPS LOCATION">
+        <div className="bg-secondary-bg border-y border-border-custom">
+          {/* Map Container */}
+          <div className="relative h-72 sm:h-96 lg:h-[450px] w-full overflow-hidden">
+            <iframe
+              title="Jina Fashion Mumbai HQ Google Map"
+              src="https://maps.google.com/maps?q=Fruitwala+Building+NM+Joshi+Marg+Delisle+Rd+Mumbai+400013&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              className="w-full h-full border-0 contrast-[105%]"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+
+            {/* Desktop Only Overlay Info Box */}
+            <div className="hidden sm:block absolute bottom-6 right-6 z-10 bg-surface/95 backdrop-blur-md border border-border-custom p-5 rounded-[14px] shadow-lg max-w-xs space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-secondary-bg flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
+                  <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Kalbadevi / Lower Parel</p>
+                </div>
+              </div>
+              <p className="text-xs text-body-custom font-sans leading-relaxed">
+                Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013
+              </p>
+              <a
+                href="https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block w-full text-center bg-primary hover:bg-primary-hover text-surface py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-[8px] transition-colors cursor-pointer shadow-xs"
+              >
+                Open in Google Maps App ↗
+              </a>
             </div>
-            <div>
-              <h4 className="font-display text-lg text-primary font-normal">Visit Our Mumbai HQ</h4>
-              <p className="text-xs text-body-custom font-sans mt-1">Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013</p>
+          </div>
+
+          {/* Mobile Only Info Card (Underneath Map for unobstructed map panning) */}
+          <div className="block sm:hidden p-4 sm:p-5 bg-surface border-t border-border-custom space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-secondary-bg flex items-center justify-center shrink-0">
+                <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
+                <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Kalbadevi / Lower Parel</p>
+              </div>
             </div>
+            <p className="text-xs text-body-custom font-sans leading-relaxed">
+              Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013
+            </p>
             <a
               href="https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6"
               target="_blank"
               rel="noreferrer"
-              className="inline-block bg-primary hover:bg-primary-hover text-surface px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-[8px] transition-colors cursor-pointer"
+              className="inline-block w-full text-center bg-primary hover:bg-primary-hover text-surface py-3 text-xs font-bold tracking-widest uppercase rounded-[10px] transition-colors cursor-pointer shadow-xs"
             >
-              Get Directions on Google Maps
+              Open in Google Maps App ↗
             </a>
           </div>
         </div>

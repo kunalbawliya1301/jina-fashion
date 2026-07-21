@@ -1036,7 +1036,7 @@ export default function Admin({ navigate }: Props) {
                 </label>
                 <input
                   type="url"
-                  placeholder="https://instagram.com/reel/..."
+                  placeholder="https://www.instagram.com/_jina_fashion"
                   value={socialForm.link}
                   onChange={(e) => setSocialForm({ ...socialForm, link: e.target.value })}
                   className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent"

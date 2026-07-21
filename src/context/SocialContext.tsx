@@ -14,46 +14,46 @@ const DEFAULT_SOCIAL_ITEMS: SocialItem[] = [
     type: 'image',
     src: '/Category/Cord Sets.png',
     title: 'Silk Sarees Campaign Reel',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
   {
     id: 'social-2',
     type: 'video',
     src: 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-posing-in-a-black-dress-41133-large.mp4',
     title: 'Bridal Lehenga Lookbook Reel',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
   {
     id: 'social-3',
     type: 'image',
     src: '/Category/Dupatta Set.png',
     title: 'Festive Dupatta Drop',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
   {
     id: 'social-4',
     type: 'video',
     src: 'https://assets.mixkit.co/videos/preview/mixkit-model-catwalking-in-a-fashion-show-41050-large.mp4',
     title: 'Summer Cord Sets Showcase',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
   {
     id: 'social-5',
     type: 'image',
     src: '/Category/Kurties.png',
     title: 'Designer Kurti Edit',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
   {
     id: 'social-6',
     type: 'image',
     src: '/Category/Short Tops.png',
     title: 'Royal Ethnic Showcase',
-    link: 'https://instagram.com',
+    link: 'https://www.instagram.com/_jina_fashion',
   },
 ]
 
-const STORAGE_KEY = 'jina_social_campaign_items_v1'
+const STORAGE_KEY = 'jina_social_campaign_items_v2'
 
 interface SocialContextType {
   items: SocialItem[]

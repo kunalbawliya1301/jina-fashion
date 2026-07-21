@@ -1,18 +1,21 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { Page } from '../App'
 import { ImgBox, SectionWrapper } from '../components/Wire'
+import SocialSection from '../components/SocialSection'
 import { useProducts } from '../context/ProductContext'
-import { useSocial } from '../context/SocialContext'
 
 interface Props {
   navigate: (p: Page) => void
 }
 
+const PRODUCTS_PER_PAGE = 12
+
 export default function Collections({ navigate }: Props) {
   const { products: allProducts } = useProducts()
-  const { items: socialItems } = useSocial()
   const [selectedFilter, setSelectedFilter] = useState('All')
   const [sortBy, setSortBy] = useState('Featured')
+  const [currentPage, setCurrentPage] = useState(1)
+  const galleryRef = useRef<HTMLDivElement>(null)
 
   const cordSetsCount = allProducts.filter(p => p.category === 'Cord Sets').length
   const dupattaSetsCount = allProducts.filter(p => p.category === 'Dupatta Set').length
@@ -30,6 +33,7 @@ export default function Collections({ navigate }: Props) {
 
   const handleFilter = (category: string) => {
     setSelectedFilter(category)
+    setCurrentPage(1)
   }
 
   // Filter items matching state
@@ -37,14 +41,17 @@ export default function Collections({ navigate }: Props) {
     ? allProducts
     : allProducts.filter(p => p.category === selectedFilter)
 
-  const igImages = [
-    'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1631857455684-a54a2f03665f?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=350',
-    'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=350',
-  ]
+  // Calculate pagination
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE))
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE
+  )
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    galleryRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <div className="space-y-0 animate-fade-in">
@@ -162,7 +169,7 @@ export default function Collections({ navigate }: Props) {
 
       {/* ── PRODUCT GALLERY ── */}
       <SectionWrapper label="PRODUCT GALLERY">
-        <div className="bg-secondary-bg py-16 sm:py-20">
+        <div ref={galleryRef} className="bg-secondary-bg py-16 sm:py-20">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10 sm:mb-14 max-w-xl mx-auto space-y-3">
               <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Explore Wholesale Catalogues</h2>
@@ -193,10 +200,10 @@ export default function Collections({ navigate }: Props) {
 
             {/* Product grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6">
-              {filteredProducts.map((p) => (
+              {paginatedProducts.map((p) => (
                 <div key={p.id} className="group bg-surface border border-border-custom rounded-[12px] overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                   <div>
-                    <ImgBox className="w-full rounded-b-none" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
+                    <ImgBox className="w-full max-h-[380px] rounded-b-none" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
                     <div className="p-3.5 sm:p-4 space-y-1 sm:space-y-1.5">
                       <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold text-brand-accent">{p.category}</span>
                       <h4 className="font-display text-sm sm:text-base text-primary font-normal leading-snug truncate">{p.name}</h4>
@@ -214,22 +221,40 @@ export default function Collections({ navigate }: Props) {
               ))}
             </div>
 
-            {/* Pagination */}
-            <div className="flex items-center justify-center gap-2 mt-12">
-              {[1, 2, 3, '…', 8].map((p, i) => (
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12">
                 <button
-                  key={i}
-                  className={`w-9 h-9 flex items-center justify-center text-xs font-semibold rounded-[8px] border transition-all duration-300 cursor-pointer ${
-                    p === 1
-                      ? 'bg-primary text-surface border-primary shadow'
-                      : 'border-border-custom text-body-custom bg-surface hover:bg-secondary-bg'
-                  }`}
-                  disabled={typeof p !== 'number'}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-3.5 h-9 flex items-center justify-center text-xs font-semibold rounded-[8px] border border-border-custom text-body-custom bg-surface hover:bg-secondary-bg disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
                 >
-                  {p}
+                  Prev
                 </button>
-              ))}
-            </div>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => handlePageChange(p)}
+                    className={`w-9 h-9 flex items-center justify-center text-xs font-semibold rounded-[8px] border transition-all duration-300 cursor-pointer ${
+                      currentPage === p
+                        ? 'bg-primary text-surface border-primary shadow-xs font-bold scale-105'
+                        : 'border-border-custom text-body-custom bg-surface hover:bg-secondary-bg'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-3.5 h-9 flex items-center justify-center text-xs font-semibold rounded-[8px] border border-border-custom text-body-custom bg-surface hover:bg-secondary-bg disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </SectionWrapper>
@@ -272,87 +297,7 @@ export default function Collections({ navigate }: Props) {
       </SectionWrapper>
 
       {/* ── INSTAGRAM PREVIEW ── */}
-      <SectionWrapper label="INSTAGRAM PREVIEW">
-        <div className="bg-secondary-bg py-16 sm:py-20 lg:py-24">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12 max-w-md mx-auto space-y-2">
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-8 h-px bg-border-custom" />
-                <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Follow @jinafashion</span>
-                <div className="w-8 h-px bg-border-custom" />
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Campaign Spreads on Socials</h2>
-            </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
-              {socialItems.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.link || 'https://instagram.com'}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative overflow-hidden rounded-[16px] shadow-sm border border-border-custom bg-surface block aspect-[9/16] transition-all duration-300 hover:shadow-lg hover:border-brand-accent/60"
-                >
-                  {item.type === 'video' ? (
-                    <video
-                      src={item.src}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <img
-                      src={item.src}
-                      alt={item.title || 'Campaign Look'}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  )}
-
-                  {/* Top Badge: Video Reel / Image indicator */}
-                  <div className="absolute top-2.5 right-2.5 bg-black/50 backdrop-blur-xs text-surface text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-medium z-10">
-                    {item.type === 'video' ? (
-                      <>
-                        <svg className="w-3 h-3 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-                        </svg>
-                        <span>REEL</span>
-                      </>
-                    ) : (
-                      <svg className="w-3 h-3 text-surface/80" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3" />
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                      </svg>
-                    )}
-                  </div>
-
-                  {/* Gradient Overlay & Title */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 text-surface">
-                    <p className="text-[11px] font-semibold tracking-wide leading-tight drop-shadow-sm">
-                      {item.title}
-                    </p>
-                    <span className="text-[9px] text-brand-accent tracking-widest uppercase font-bold mt-1">
-                      View on IG →
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <div className="text-center">
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="inline-block border border-primary px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-primary hover:bg-primary hover:text-surface transition-all duration-300 rounded-[12px] bg-surface cursor-pointer shadow-sm hover:shadow"
-              >
-                Follow on Instagram
-              </a>
-            </div>
-          </div>
-        </div>
-      </SectionWrapper>
+      <SocialSection />
     </div>
   )
 }

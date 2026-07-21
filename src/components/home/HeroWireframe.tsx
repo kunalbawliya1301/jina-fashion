@@ -44,7 +44,7 @@ export default function HeroWireframe({ navigate }: Props) {
               </div>
 
               {/* Side Images (Hidden on Mobile, visible on Desktop) */}
-              <div className="hidden lg:block lg:col-span-5 lg:min-h-0">
+              <div className="hidden lg:block lg:col-span-5 lg:min-h-0 max-h-[280px]">
                 <ImgBox 
                   className="h-full w-full shadow-md" 
                   src="/Home Page/Top.png" 
@@ -52,7 +52,7 @@ export default function HeroWireframe({ navigate }: Props) {
                   alt="Zari embroidery work close-up detailed"
                 />
               </div>
-              <div className="hidden lg:block lg:col-span-5 lg:min-h-0">
+              <div className="hidden lg:block lg:col-span-5 lg:min-h-0 max-h-[280px]">
                 <ImgBox 
                   className="h-full w-full shadow-md" 
                   src="/Home Page/Bottom.png" 
