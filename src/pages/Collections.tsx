@@ -12,18 +12,18 @@ export default function Collections({ navigate }: Props) {
   const [selectedFilter, setSelectedFilter] = useState('All')
   const [sortBy, setSortBy] = useState('Featured')
 
-  const sareesCount = allProducts.filter(p => p.category === 'Sarees').length
-  const lehengasCount = allProducts.filter(p => p.category === 'Lehengas').length
-  const suitsCount = allProducts.filter(p => p.category === 'Suits' || p.category === 'Salwar Suits').length
-  const kurtasCount = allProducts.filter(p => p.category === 'Kurtas').length
-  const dupattasCount = allProducts.filter(p => p.category === 'Dupattas').length
+  const cordSetsCount = allProducts.filter(p => p.category === 'Cord Sets').length
+  const dupattaSetsCount = allProducts.filter(p => p.category === 'Dupatta Set').length
+  const kurtiesCount = allProducts.filter(p => p.category === 'Kurties' || p.category === 'Kurtas').length
+  const pantPlazzoCount = allProducts.filter(p => p.category === 'Pant/Plazzo set').length
+  const shortTopsCount = allProducts.filter(p => p.category === 'Short Tops').length
 
   const categories = [
-    { label: 'Sarees', count: `${sareesCount}+ Designs`, src: 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=600' },
-    { label: 'Lehengas', count: `${lehengasCount}+ Designs`, src: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600' },
-    { label: 'Salwar Suits', count: `${suitsCount}+ Designs`, src: 'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=600' },
-    { label: 'Kurtas', count: `${kurtasCount}+ Designs`, src: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=600' },
-    { label: 'Dupattas', count: `${dupattasCount}+ Designs`, src: 'https://images.unsplash.com/photo-1590075865003-e48277faa558?auto=format&fit=crop&q=80&w=600' },
+    { label: 'Cord Sets', count: `${cordSetsCount}+ Designs`, src: '/Category/Cord Sets.png' },
+    { label: 'Dupatta Set', count: `${dupattaSetsCount}+ Designs`, src: '/Category/Dupatta Set.png' },
+    { label: 'Kurties', count: `${kurtiesCount}+ Designs`, src: '/Category/Kurties.png' },
+    { label: 'Pant/Plazzo set', count: `${pantPlazzoCount}+ Designs`, src: '/Category/Pant Palazzo Set.png' },
+    { label: 'Short Tops', count: `${shortTopsCount}+ Designs`, src: '/Category/Short Tops.png' },
   ]
 
   const handleFilter = (category: string) => {
@@ -33,14 +33,7 @@ export default function Collections({ navigate }: Props) {
   // Filter items matching state
   const filteredProducts = selectedFilter === 'All'
     ? allProducts
-    : allProducts.filter(p => {
-        if (selectedFilter === 'Sarees') return p.category === 'Sarees'
-        if (selectedFilter === 'Lehengas') return p.category === 'Lehengas'
-        if (selectedFilter === 'Suits') return p.category === 'Suits' || p.category === 'Salwar Suits'
-        if (selectedFilter === 'Kurtas') return p.category === 'Kurtas'
-        if (selectedFilter === 'Dupattas') return p.category === 'Dupattas'
-        return true
-      })
+    : allProducts.filter(p => p.category === selectedFilter)
 
   const igImages = [
     'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=350',
@@ -57,8 +50,8 @@ export default function Collections({ navigate }: Props) {
       <SectionWrapper label="COLLECTIONS HERO BANNER">
         <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden flex items-center justify-center">
           <img
-            src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=1600"
-            alt="Beautiful flat lay of silk sarees"
+            src="/Hero Sections/Collection Page.png"
+            alt="Collections Hero Banner"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-primary/60 backdrop-blur-[1px]" />
@@ -86,35 +79,81 @@ export default function Collections({ navigate }: Props) {
             <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Artisanal Specialities</h2>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categories.map(({ label, count, src }, i) => (
-              <div
-                key={i}
-                onClick={() => {
-                  if (label === 'Salwar Suits') handleFilter('Suits')
-                  else handleFilter(label)
-                }}
-                className={`group border border-border-custom bg-surface rounded-[12px] overflow-hidden hover:shadow-md transition-all duration-300 cursor-pointer ${
-                  i === 4 ? 'col-span-2 sm:col-span-1' : ''
-                }`}
-              >
-                <div className="aspect-[2/3] overflow-hidden relative">
-                  <img
-                    src={src}
-                    alt={label}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
+          {/* Desktop/Laptop View: Original Category Cards Grid */}
+          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {categories.map(({ label, count, src }, i) => {
+              const catKey = label === 'Salwar Suits' ? 'Suits' : label
+              return (
+                <div
+                  key={i}
+                  onClick={() => handleFilter(catKey)}
+                  className={`group border border-border-custom bg-surface rounded-[12px] overflow-hidden hover:shadow-md transition-all duration-300 cursor-pointer ${
+                    i === 4 ? 'col-span-1 md:col-span-1' : ''
+                  }`}
+                >
+                  <div className="aspect-[2/3] overflow-hidden relative">
+                    <img
+                      src={src}
+                      alt={label}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300" />
+                  </div>
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-display text-base sm:text-lg text-primary font-normal group-hover:text-brand-accent transition-colors">{label}</h3>
+                    <span className="inline-block px-2.5 py-0.5 text-[9px] font-semibold tracking-wider bg-secondary-bg text-brand-accent rounded">
+                      {count}
+                    </span>
+                  </div>
                 </div>
-                <div className="p-4 space-y-2">
-                  <h3 className="font-display text-base sm:text-lg text-primary font-normal group-hover:text-brand-accent transition-colors">{label}</h3>
-                  <span className="inline-block px-2.5 py-0.5 text-[9px] font-semibold tracking-wider bg-secondary-bg text-brand-accent rounded">
-                    {count}
-                  </span>
+              )
+            })}
+          </div>
+
+          {/* Mobile Only View: Horizontal Scroll Category Cards (Matching Reference Screenshot) */}
+          <div className="flex md:hidden overflow-x-auto no-scrollbar gap-3.5 pb-4 pt-1 justify-start px-2 snap-x snap-mandatory">
+            {categories.map(({ label, count, src }, i) => {
+              const catKey = label === 'Salwar Suits' ? 'Suits' : label
+              const isSelected = selectedFilter === catKey
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => handleFilter(catKey)}
+                  className={`shrink-0 w-[165px] snap-center bg-surface border rounded-[18px] p-3 shadow-xs space-y-2.5 cursor-pointer transition-all duration-300 active:scale-95 ${
+                    isSelected ? 'border-brand-accent ring-2 ring-brand-accent/20' : 'border-border-custom'
+                  }`}
+                >
+                  {/* Category Name above image */}
+                  <h3 className="font-sans text-sm font-bold text-primary text-center truncate">
+                    {label}
+                  </h3>
+
+                  {/* Image container with gradient overlay & text badge */}
+                  <div className="aspect-[3/4] rounded-[14px] overflow-hidden relative shadow-xs">
+                    <img
+                      src={src}
+                      alt={label}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent flex items-end justify-center pb-2.5">
+                      <span className="text-xs font-bold text-surface tracking-wide drop-shadow-sm">
+                        Wholesale Rates
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bottom info badge */}
+                  <div className="bg-secondary-bg/80 rounded-lg py-1 px-2 text-center">
+                    <span className="text-[10px] font-semibold text-brand-accent tracking-wider uppercase">
+                      {count}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </SectionWrapper>
@@ -130,60 +169,41 @@ export default function Collections({ navigate }: Props) {
               </p>
             </div>
 
-            {/* Filter/sort bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border border-border-custom bg-surface px-4 sm:px-6 py-4 rounded-[12px] mb-8 gap-4 shadow-sm">
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            {/* Filter bar */}
+            <div className="border border-border-custom bg-surface px-4 sm:px-6 py-3.5 rounded-[14px] mb-8 shadow-xs">
+              <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
                 <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-primary shrink-0 mr-2">Filter:</span>
-                {['All', 'Sarees', 'Lehengas', 'Suits', 'Kurtas'].map((f) => (
+                {['All', 'Cord Sets', 'Dupatta Set', 'Kurties', 'Pant/Plazzo set', 'Short Tops'].map((f) => (
                   <button
                     key={f}
                     onClick={() => handleFilter(f)}
-                    className={`px-4 py-1.5 text-[10px] font-semibold tracking-wider uppercase rounded-full cursor-pointer transition-all duration-300 ${
+                    className={`px-4 sm:px-5 py-2 text-[10px] sm:text-xs font-bold tracking-wider uppercase rounded-full cursor-pointer transition-all duration-300 shrink-0 ${
                       selectedFilter === f
-                        ? 'bg-primary text-surface shadow'
-                        : 'border border-border-custom text-body-custom bg-surface hover:bg-secondary-bg'
+                        ? 'bg-primary text-surface shadow-xs scale-105'
+                        : 'border border-border-custom text-body-custom bg-surface hover:border-brand-accent/60 hover:text-brand-accent'
                     }`}
                   >
                     {f}
                   </button>
                 ))}
               </div>
-              
-              <div className="flex items-center gap-3 shrink-0">
-                <label htmlFor="sort-dropdown" className="text-[11px] font-bold tracking-[0.15em] uppercase text-primary">Sort By:</label>
-                <select
-                  id="sort-dropdown"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-3 py-1.5 text-xs bg-surface border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom font-semibold cursor-pointer shadow-sm"
-                >
-                  <option>Featured</option>
-                  <option>New Arrivals</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
-                </select>
-              </div>
             </div>
 
             {/* Product grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6">
               {filteredProducts.map((p) => (
                 <div key={p.id} className="group bg-surface border border-border-custom rounded-[12px] overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                   <div>
-                    <ImgBox className="w-full" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
-                    <div className="p-4 space-y-1.5">
-                      <span className="text-[9px] tracking-widest uppercase font-semibold text-brand-accent">{p.category}</span>
-                      <h4 className="font-display text-base text-primary font-normal leading-snug truncate">{p.name}</h4>
-                      <p className="text-[10px] text-muted-custom font-medium truncate font-sans">{p.fabric}</p>
+                    <ImgBox className="w-full rounded-b-none" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
+                    <div className="p-3.5 sm:p-4 space-y-1 sm:space-y-1.5">
+                      <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold text-brand-accent">{p.category}</span>
+                      <h4 className="font-display text-sm sm:text-base text-primary font-normal leading-snug truncate">{p.name}</h4>
                     </div>
                   </div>
-                  <div className="px-4 pb-4 pt-0 space-y-3">
-                    <div className="text-[9px] text-body-custom font-semibold bg-secondary-bg px-2.5 py-0.5 rounded inline-block">
-                      MOQ: {p.moq}
-                    </div>
+                  <div className="p-3.5 sm:p-4 pt-0">
                     <button
                       onClick={() => navigate('contact')}
-                      className="w-full border border-primary text-center py-2 text-[9px] tracking-widest uppercase text-primary font-bold rounded-[8px] bg-transparent hover:bg-primary hover:text-surface transition-all duration-300 cursor-pointer"
+                      className="w-full border border-primary text-center py-2 text-[9px] sm:text-[10px] tracking-widest uppercase text-primary font-bold rounded-[8px] bg-transparent hover:bg-primary hover:text-surface transition-all duration-300 cursor-pointer"
                     >
                       Inquire
                     </button>

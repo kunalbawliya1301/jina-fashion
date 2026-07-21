@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose'
 
 export interface IProduct extends Document {
   name: string
-  category: 'Sarees' | 'Lehengas' | 'Suits' | 'Kurtas' | 'Dupattas'
+  category: 'Cord Sets' | 'Dupatta Set' | 'Kurties' | 'Pant/Plazzo set' | 'Short Tops'
   fabric: string
   moq: string
   wholesalePrice: string
@@ -17,7 +17,7 @@ export interface IProduct extends Document {
 const ProductSchema = new Schema<IProduct>(
   {
     name:             { type: String, required: true, trim: true, maxlength: 200 },
-    category:         { type: String, required: true, enum: ['Sarees','Lehengas','Suits','Kurtas','Dupattas'] },
+    category:         { type: String, required: true, enum: ['Cord Sets','Dupatta Set','Kurties','Pant/Plazzo set','Short Tops'] },
     fabric:           { type: String, required: true, trim: true, maxlength: 200 },
     moq:              { type: String, default: 'Contact for MOQ', trim: true, maxlength: 100 },
     wholesalePrice:   { type: String, default: 'Quote on Request', trim: true, maxlength: 100 },

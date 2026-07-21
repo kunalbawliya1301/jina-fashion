@@ -11,7 +11,7 @@ export default function Contact() {
     phone: '',
     email: '',
     city: '',
-    interest: 'Sarees',
+    interest: 'Cord Sets',
     message: '',
     quantity: '100 - 500 Pcs',
     updates: true
@@ -43,7 +43,7 @@ export default function Contact() {
   const contactItems = [
     {
       label: 'ADDRESS',
-      value: '402, Senapati Bapat Marg, Lower Parel, Mumbai, Maharashtra, India - 400013',
+      value: 'Room No.30, Building No.2, Fruitwala Building Delisle Road, NM Joshi Marg, Mumbai, Maharashtra 400013',
       svg: (
         <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -52,8 +52,8 @@ export default function Contact() {
       )
     },
     {
-      label: 'PHONE',
-      value: '+91 98765 43210 / +91 22 8765 4321',
+      label: 'PHONE / WHATSAPP',
+      value: '+91 9967998080 / +91 9892028161',
       svg: (
         <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.802-5.122-4.1-6.924-6.924l1.293-.97a1.125 1.125 0 00.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H3.75A2.25 2.25 0 001.5 4.5v2.25z"></path>
@@ -109,7 +109,7 @@ export default function Contact() {
           phone: '',
           email: '',
           city: '',
-          interest: 'Sarees',
+          interest: 'Cord Sets',
           message: '',
           quantity: '100 - 500 Pcs',
           updates: true,
@@ -128,8 +128,8 @@ export default function Contact() {
       <SectionWrapper label="CONTACT HERO BANNER">
         <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden flex items-center justify-center">
           <img
-            src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=1600"
-            alt="Beautiful apparel rack showroom"
+            src="/Hero Sections/Contact Page.png"
+            alt="Contact Us Hero Banner"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-primary/60 backdrop-blur-[1px]" />
@@ -298,11 +298,11 @@ export default function Contact() {
                           onChange={(e) => setFormData({...formData, interest: e.target.value})}
                           className="w-full px-4 py-2.5 text-sm bg-custom-bg border border-border-custom rounded-[8px] focus:outline-none focus:border-brand-accent text-body-custom transition-all cursor-pointer font-semibold shadow-sm"
                         >
-                          <option value="Sarees">Sarees Range</option>
-                          <option value="Lehengas">Lehengas Range</option>
-                          <option value="Suits">Salwar Suits Range</option>
-                          <option value="Kurtas">Kurtas Range</option>
-                          <option value="Dupattas">Dupattas & Others</option>
+                          <option value="Cord Sets">Cord Sets Range</option>
+                          <option value="Dupatta Set">Dupatta Set Range</option>
+                          <option value="Kurties">Kurties Range</option>
+                          <option value="Pant/Plazzo set">Pant/Plazzo set Range</option>
+                          <option value="Short Tops">Short Tops Range</option>
                         </select>
                       </div>
 
@@ -398,15 +398,15 @@ export default function Contact() {
             </div>
             <div>
               <h4 className="font-display text-lg text-primary font-normal">Visit Our Mumbai HQ</h4>
-              <p className="text-xs text-body-custom font-sans mt-1">402, Senapati Bapat Marg, Lower Parel, MH - 400013</p>
+              <p className="text-xs text-body-custom font-sans mt-1">Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013</p>
             </div>
             <a
-              href="https://maps.google.com"
+              href="https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6"
               target="_blank"
               rel="noreferrer"
               className="inline-block bg-primary hover:bg-primary-hover text-surface px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-[8px] transition-colors cursor-pointer"
             >
-              Get Directions
+              Get Directions on Google Maps
             </a>
           </div>
         </div>

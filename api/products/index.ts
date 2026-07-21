@@ -24,7 +24,7 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
     const sort     = q['sort']      as string
 
     const filter: Record<string, unknown> = {}
-    const validCategories = ['Sarees','Lehengas','Suits','Kurtas','Dupattas']
+    const validCategories = ['Cord Sets','Dupatta Set','Kurties','Pant/Plazzo set','Short Tops']
     const validStatuses   = ['In Stock','Low Stock','Pre-Order','Out of Stock']
 
     if (category && validCategories.includes(category)) filter['category'] = category

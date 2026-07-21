@@ -21,8 +21,8 @@ export default function About({ navigate }: Props) {
       <SectionWrapper label="ABOUT HERO BANNER">
         <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden flex items-center justify-center">
           <img
-            src="https://images.unsplash.com/photo-1590075865003-e48277faa558?auto=format&fit=crop&q=80&w=1600"
-            alt="Intricate fabric loom close up"
+            src="/Hero Sections/About Us Page.png"
+            alt="About Us Hero Banner"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-primary/60 backdrop-blur-[1px]" />
@@ -49,20 +49,20 @@ export default function About({ navigate }: Props) {
                 <span className="text-[10px] tracking-[0.2em] font-semibold uppercase text-brand-accent">Who We Are</span>
               </div>
               <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal leading-tight">
-                Pioneering Quality In <br className="hidden sm:inline" />
-                Women's Ethnic Wholesale
+                A Century-Old Family Legacy In <br className="hidden sm:inline" />
+                Ladies Ethnic Wear Manufacturing
               </h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                Founded in 2010 in Mumbai, Jina Fashion began with a single vision: to bridge the gap between premium heritage handlooms and commercial retail demands. Over the last 15 years, we have grown into a reliable wholesale manufacturer, supplying over 1,000 independent boutiques and department chains across India and overseas.
+                Established in 2021 in the vibrant textile hub of Kalbadevi, Mumbai, <strong>JINA Fashion</strong> is a manufacturer of premium ladies ethnic wear, dedicated to creating elegant designs that celebrate tradition with a contemporary touch.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                We handle the entire production chain in-house. From sourcing premium silk threads and quality cotton-silk blends to designing complex embroidery plates and maintaining rigorous stitching inspections, our operations guarantee absolute design consistency.
+                Founded by a third-generation entrepreneur, JINA Fashion proudly carries forward a family legacy that spans over a century. The journey began more than 100 years ago with a small retail store established by his grandfather in Lower Parel, Mumbai. Over the years, the family expanded its presence into the wholesale garment business under the leadership of his father and brother, building a strong reputation for quality, trust, and customer relationships.
               </p>
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border-custom">
                 {[
-                  ['2010', 'Founded'],
-                  ['Mumbai', 'HQ Studio'],
-                  ['Pan India', 'Distribution'],
+                  ['100+ Yrs', 'Family Legacy'],
+                  ['2021', 'Kalbadevi Studio'],
+                  ['Mumbai', 'HQ Manufacturing'],
                 ].map(([val, label]) => (
                   <div key={label} className="space-y-1">
                     <div className="font-display text-xl sm:text-2xl font-semibold text-brand-accent">{val}</div>
@@ -72,31 +72,15 @@ export default function About({ navigate }: Props) {
               </div>
             </div>
 
-            {/* Image mosaic */}
-            <div className="lg:col-span-6 order-1 lg:order-2 grid grid-cols-2 gap-4">
+            {/* Single Showcase Image */}
+            <div className="lg:col-span-6 order-1 lg:order-2 flex justify-center">
               <ImgBox 
-                className="w-full shadow-md" 
+                className="w-full max-w-xs sm:max-w-sm lg:max-w-[380px] shadow-md rounded-[16px]" 
                 aspect="3/4" 
-                src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=600" 
-                label="SHOWROOM" 
+                src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=800" 
+                label="HERITAGE SHOWROOM" 
                 alt="Jina Fashion designer boutique showroom"
               />
-              <div className="space-y-4">
-                <ImgBox 
-                  className="w-full shadow-sm" 
-                  aspect="1/1" 
-                  src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=400" 
-                  label="DESIGN STUDIO" 
-                  alt="Draped fabric selection design studio"
-                />
-                <ImgBox 
-                  className="w-full shadow-sm" 
-                  aspect="1/1" 
-                  src="https://images.unsplash.com/photo-1590075865003-e48277faa558?auto=format&fit=crop&q=80&w=400" 
-                  label="WORKSHOP" 
-                  alt="Traditional handloom master weaver workshop"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -109,12 +93,12 @@ export default function About({ navigate }: Props) {
             <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 space-y-4">
               <div className="flex items-center justify-center gap-3">
                 <div className="w-10 sm:w-12 h-px bg-border-custom" />
-                <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Our Story</span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Our Heritage</span>
                 <div className="w-10 sm:w-12 h-px bg-border-custom" />
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Preserving Artistry, Powering Commerce</h2>
+              <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Centuries of Craftsmanship & Modern Vision</h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans text-left sm:text-center mt-4">
-                Every saree, lehenga, and suit in the Jina Fashion catalog tells a story of Indian heritage. We believe in providing sustainable livelihoods to local artisans and master weavers. By pairing their generational hand-weaving talents with modern dye-safety guidelines and industrial finishing standards, we offer a product that stands out in visual appeal, texture, and structural longevity.
+                Inspired by this rich heritage, JINA Fashion combines decades of industry knowledge with modern design sensibilities to manufacture daily & casual wear, festive wear, and fusion wear for ladies ethnic wear. Every garment is created with a commitment to excellence, ensuring our customers receive products that embody elegance, comfort, and value.
               </p>
             </div>
             
@@ -166,7 +150,7 @@ export default function About({ navigate }: Props) {
                 </div>
                 <div className="border-b border-border-custom" />
                 <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                  To supply retail outlets, independent boutiques, and online ethnic brands with outstanding quality apparel, ensuring fair business partnerships and direct access to traditional handloom mastery.
+                  To create premium ethnic wear while delivering exceptional quality, value, and customer satisfaction.
                 </p>
                 <ul className="space-y-3 pt-2 text-xs text-body-custom font-sans">
                   <li className="flex items-center gap-3">

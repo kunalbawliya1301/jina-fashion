@@ -22,17 +22,17 @@ export default function WireNav({ current, navigate }: Props) {
   }
 
   return (
-    <header className="border-b border-border-custom bg-surface sticky top-0 z-50 shadow-sm backdrop-blur-md bg-surface/95">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+    <header className="border-b border-border-custom bg-surface/95 backdrop-blur-md sticky top-0 z-50 shadow-sm relative">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 lg:h-20 flex items-center justify-between">
         {/* Elegant Brand Logo */}
         <button 
           onClick={() => handleNav('home')} 
-          className="cursor-pointer group shrink-0"
+          className="cursor-pointer group shrink-0 py-1"
         >
           <img
             src="/JINA Logo.png"
             alt="Jina Fashion Logo"
-            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-102"
+            className="h-7 sm:h-9 lg:h-11 w-auto object-contain"
           />
         </button>
 
@@ -68,7 +68,7 @@ export default function WireNav({ current, navigate }: Props) {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(o => !o)}
-            className="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-secondary-bg transition-colors"
+            className="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-secondary-bg transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             <div className={`w-5 h-0.5 bg-primary transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
@@ -78,30 +78,34 @@ export default function WireNav({ current, navigate }: Props) {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="lg:hidden border-t border-border-custom bg-surface shadow-lg animate-fade-in">
-          <nav className="flex flex-col p-2 space-y-1">
-            {links.map(({ label, page }) => (
-              <button
-                key={page}
-                onClick={() => handleNav(page)}
-                className={`px-4 py-3.5 text-left text-xs tracking-[0.2em] uppercase font-semibold rounded-[12px] transition-all duration-200 cursor-pointer ${
-                  current === page ? 'text-brand-accent bg-secondary-bg' : 'text-body-custom hover:text-brand-accent hover:bg-secondary-bg'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+      {/* Mobile Menu Floating Absolute Overlay with Slide In / Slide Out Animation */}
+      <div 
+        className={`lg:hidden absolute top-full left-0 right-0 z-50 bg-surface/98 backdrop-blur-md border-border-custom transition-all duration-300 ease-in-out overflow-hidden ${
+          menuOpen 
+            ? 'max-h-[350px] opacity-100 translate-y-0 border-b shadow-xl pointer-events-auto' 
+            : 'max-h-0 opacity-0 -translate-y-2 border-b-0 shadow-none pointer-events-none'
+        }`}
+      >
+        <nav className="flex flex-col p-3 space-y-1">
+          {links.map(({ label, page }) => (
             <button
-              onClick={() => handleNav('contact')}
-              className="mx-4 my-3 bg-primary hover:bg-primary-hover text-surface py-3 text-xs font-semibold tracking-[0.2em] uppercase rounded-[12px] text-center cursor-pointer transition-colors"
+              key={page}
+              onClick={() => handleNav(page)}
+              className={`px-4 py-3 text-left text-xs tracking-[0.2em] uppercase font-semibold rounded-[12px] transition-all duration-200 cursor-pointer ${
+                current === page ? 'text-brand-accent bg-secondary-bg font-bold' : 'text-body-custom hover:text-brand-accent hover:bg-secondary-bg'
+              }`}
             >
-              Get a Quote
+              {label}
             </button>
-          </nav>
-        </div>
-      )}
+          ))}
+          <button
+            onClick={() => handleNav('contact')}
+            className="mx-2 mt-2 mb-1 bg-primary hover:bg-primary-hover text-surface py-3 text-xs font-semibold tracking-[0.2em] uppercase rounded-[12px] text-center cursor-pointer transition-colors shadow-sm"
+          >
+            Get a Quote
+          </button>
+        </nav>
+      </div>
     </header>
   )
 }

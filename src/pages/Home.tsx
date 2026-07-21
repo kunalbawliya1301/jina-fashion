@@ -1,7 +1,9 @@
+import { useState, useRef } from 'react'
 import type { Page } from '../App'
 import { ImgBox, WireBtn, SectionWrapper } from '../components/Wire'
 import HeroWireframe from '../components/home/HeroWireframe'
 import { useProducts } from '../context/ProductContext'
+import { useSocial } from '../context/SocialContext'
 
 interface Props {
   navigate: (p: Page) => void
@@ -9,6 +11,93 @@ interface Props {
 
 export default function Home({ navigate }: Props) {
   const { products: allProducts } = useProducts()
+  const { items: socialItems } = useSocial()
+  const tickerRef = useRef<HTMLDivElement>(null)
+  const [activeFeatureIndex, setActiveFeatureIndex] = useState(0)
+  const isProgrammaticScroll = useRef(false)
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleFeatureScroll = () => {
+    if (isProgrammaticScroll.current) return
+    if (tickerRef.current) {
+      const scrollLeft = tickerRef.current.scrollLeft
+      const width = tickerRef.current.clientWidth
+      if (width > 0) {
+        const index = Math.round(scrollLeft / width)
+        const clamped = Math.min(5, Math.max(0, index))
+        setActiveFeatureIndex(clamped)
+      }
+    }
+  }
+
+  const scrollToIndex = (index: number) => {
+    if (tickerRef.current) {
+      const width = tickerRef.current.clientWidth
+      isProgrammaticScroll.current = true
+      setActiveFeatureIndex(index)
+
+      tickerRef.current.scrollTo({
+        left: index * width,
+        behavior: 'smooth',
+      })
+
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+      scrollTimeoutRef.current = setTimeout(() => {
+        isProgrammaticScroll.current = false
+      }, 450)
+    }
+  }
+
+  const scrollTicker = (direction: 'left' | 'right') => {
+    const nextIndex = direction === 'left'
+      ? Math.max(0, activeFeatureIndex - 1)
+      : Math.min(5, activeFeatureIndex + 1)
+    scrollToIndex(nextIndex)
+  }
+
+  // ── Testimonial Carousel State & Handlers ──
+  const testimonialRef = useRef<HTMLDivElement>(null)
+  const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0)
+  const isTestimonialScroll = useRef(false)
+  const testimonialTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleTestimonialScroll = () => {
+    if (isTestimonialScroll.current) return
+    if (testimonialRef.current) {
+      const scrollLeft = testimonialRef.current.scrollLeft
+      const width = testimonialRef.current.clientWidth
+      if (width > 0) {
+        const index = Math.round(scrollLeft / width)
+        const clamped = Math.min(2, Math.max(0, index))
+        setActiveTestimonialIndex(clamped)
+      }
+    }
+  }
+
+  const scrollTestimonialToIndex = (index: number) => {
+    if (testimonialRef.current) {
+      const width = testimonialRef.current.clientWidth
+      isTestimonialScroll.current = true
+      setActiveTestimonialIndex(index)
+
+      testimonialRef.current.scrollTo({
+        left: index * width,
+        behavior: 'smooth',
+      })
+
+      if (testimonialTimeoutRef.current) clearTimeout(testimonialTimeoutRef.current)
+      testimonialTimeoutRef.current = setTimeout(() => {
+        isTestimonialScroll.current = false
+      }, 450)
+    }
+  }
+
+  const scrollTestimonial = (direction: 'left' | 'right') => {
+    const nextIndex = direction === 'left'
+      ? Math.max(0, activeTestimonialIndex - 1)
+      : Math.min(2, activeTestimonialIndex + 1)
+    scrollTestimonialToIndex(nextIndex)
+  }
 
   // Pick featured items or top 4 products
   const featuredList = allProducts.filter(p => p.featured)
@@ -114,17 +203,17 @@ export default function Home({ navigate }: Props) {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Image */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-4 flex justify-center">
               <ImgBox 
-                className="w-full max-w-md mx-auto lg:max-w-none shadow-md" 
+                className="w-full max-w-xs sm:max-w-sm lg:max-w-[320px] shadow-md rounded-[16px]" 
                 aspect="3/4" 
-                src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800" 
+                src="/Home Page/About Section.png" 
                 label="Craftsman Loom" 
                 alt="Artisanal loom and thread craft styling"
               />
             </div>
             {/* Text details */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-8 space-y-6">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-px bg-brand-accent" />
                 <span className="text-[10px] tracking-[0.2em] font-semibold uppercase text-brand-accent">About Jina Fashion</span>
@@ -175,24 +264,20 @@ export default function Home({ navigate }: Props) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
             {products.map((p, i) => (
               <div key={i} className="group relative bg-surface border border-border-custom rounded-[12px] overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                 <div>
-                  <ImgBox className="w-full" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
-                  <div className="p-5 space-y-2">
-                    <span className="text-[10px] tracking-widest uppercase font-semibold text-brand-accent">{p.category}</span>
-                    <h3 className="font-display text-lg text-primary font-normal">{p.name}</h3>
-                    <p className="text-xs text-muted-custom leading-normal font-sans truncate">{p.description || p.fabric}</p>
+                  <ImgBox className="w-full rounded-b-none" aspect="3/4" src={p.src} label={p.name} alt={p.name} />
+                  <div className="p-3.5 sm:p-5 space-y-1 sm:space-y-1.5">
+                    <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold text-brand-accent">{p.category}</span>
+                    <h3 className="font-display text-sm sm:text-lg text-primary font-normal leading-snug truncate">{p.name}</h3>
                   </div>
                 </div>
-                <div className="px-5 pb-5 pt-0 space-y-3">
-                  <div className="text-[10px] text-body-custom font-semibold bg-secondary-bg px-2.5 py-1 rounded inline-block">
-                    MOQ: {p.moq}
-                  </div>
+                <div className="p-3.5 sm:p-5 pt-0">
                   <button
                     onClick={() => navigate('contact')}
-                    className="w-full border border-primary text-center py-2.5 text-[10px] tracking-widest uppercase text-primary font-bold rounded-[8px] bg-transparent hover:bg-primary hover:text-surface transition-all duration-300 cursor-pointer"
+                    className="w-full border border-primary text-center py-2 sm:py-2.5 text-[9px] sm:text-[10px] tracking-widest uppercase text-primary font-bold rounded-[8px] bg-transparent hover:bg-primary hover:text-surface transition-all duration-300 cursor-pointer"
                   >
                     Send Inquiry
                   </button>
@@ -211,7 +296,7 @@ export default function Home({ navigate }: Props) {
       <SectionWrapper label="WHY CHOOSE US">
         <div className="bg-secondary-bg py-16 sm:py-20 lg:py-24">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 sm:mb-16 max-w-xl mx-auto space-y-3">
+            <div className="text-center mb-10 sm:mb-14 max-w-xl mx-auto space-y-3">
               <span className="text-[10px] tracking-[0.2em] uppercase text-brand-accent font-semibold">Our Value Proposition</span>
               <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Why Partner With Jina Fashion</h2>
               <p className="text-body-custom font-sans text-sm leading-relaxed">
@@ -219,9 +304,10 @@ export default function Home({ navigate }: Props) {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Desktop View: Static 3-Column Grid */}
+            <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8">
               {features.map((feat, i) => (
-                <div key={i} className="bg-surface border border-border-custom p-8 rounded-[12px] hover:shadow-md transition-all duration-300 space-y-4">
+                <div key={i} className="bg-surface border border-border-custom p-8 rounded-[14px] hover:shadow-md transition-all duration-300 space-y-4">
                   <div className="w-12 h-12 rounded-[8px] bg-secondary-bg flex items-center justify-center">
                     {feat.svg}
                   </div>
@@ -229,6 +315,76 @@ export default function Home({ navigate }: Props) {
                   <p className="text-sm text-body-custom leading-relaxed font-sans">{feat.desc}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Mobile/Tablet View: Interactive Card Carousel with Left/Right Arrows & Dots */}
+            <div className="block lg:hidden relative">
+              <div className="relative flex items-center px-1">
+                {/* Left Arrow Button */}
+                <button
+                  type="button"
+                  onClick={() => scrollTicker('left')}
+                  disabled={activeFeatureIndex === 0}
+                  className="w-8 h-8 rounded-full bg-surface border border-border-custom text-primary hover:bg-brand-accent hover:text-surface shadow-md flex items-center justify-center absolute -left-2 top-1/2 -translate-y-1/2 z-20 transition-all cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed active:scale-95 shrink-0"
+                  aria-label="Previous card"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+
+                {/* Right Arrow Button */}
+                <button
+                  type="button"
+                  onClick={() => scrollTicker('right')}
+                  disabled={activeFeatureIndex === features.length - 1}
+                  className="w-8 h-8 rounded-full bg-surface border border-border-custom text-primary hover:bg-brand-accent hover:text-surface shadow-md flex items-center justify-center absolute -right-2 top-1/2 -translate-y-1/2 z-20 transition-all cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed active:scale-95 shrink-0"
+                  aria-label="Next card"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+
+                {/* Scroll Container */}
+                <div
+                  ref={tickerRef}
+                  onScroll={handleFeatureScroll}
+                  className="w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth px-1 py-1"
+                >
+                  {features.map((feat, i) => (
+                    <div
+                      key={i}
+                      className="w-full shrink-0 snap-center px-4 sm:px-6"
+                    >
+                      <div className="bg-surface border border-border-custom p-6 sm:p-7 rounded-[16px] space-y-3 shadow-xs h-[210px] flex flex-col justify-start">
+                        <div className="w-10 h-10 rounded-[8px] bg-secondary-bg flex items-center justify-center shrink-0">
+                          {feat.svg}
+                        </div>
+                        <h3 className="font-display text-base sm:text-lg text-primary font-normal leading-snug">{feat.title}</h3>
+                        <p className="text-xs sm:text-sm text-body-custom leading-relaxed font-sans line-clamp-3">{feat.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navigation Dots */}
+              <div className="flex items-center justify-center gap-2 mt-4">
+                {features.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => scrollToIndex(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 ease-out cursor-pointer ${
+                      i === activeFeatureIndex
+                        ? 'w-5 bg-brand-accent'
+                        : 'w-2 bg-border-custom hover:bg-muted-custom'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -246,11 +402,12 @@ export default function Home({ navigate }: Props) {
             <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Feedback From Retail Partners</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Desktop View: Static 3-Column Grid */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8">
             {testimonials.map((t, i) => (
-              <div key={i} className="border border-border-custom p-8 rounded-[12px] bg-surface hover:shadow-md transition-all duration-300 flex flex-col justify-between space-y-6">
-                <div className="space-y-4">
-                  <div className="text-5xl text-brand-accent/30 font-display leading-none select-none">“</div>
+              <div key={i} className="border border-border-custom p-8 rounded-[16px] bg-surface hover:shadow-md transition-all duration-300 flex flex-col justify-between space-y-6">
+                <div className="space-y-3">
+                  <div className="text-7xl sm:text-8xl text-brand-accent/40 font-display leading-none select-none -mb-3 font-serif">“</div>
                   <p className="text-sm text-body-custom leading-relaxed italic font-sans">{t.quote}</p>
                 </div>
                 <div className="border-t border-border-custom pt-4 flex items-center gap-4">
@@ -270,6 +427,89 @@ export default function Home({ navigate }: Props) {
               </div>
             ))}
           </div>
+
+          {/* Mobile/Tablet View: Interactive Testimonial Carousel */}
+          <div className="block lg:hidden relative">
+            <div className="relative flex items-center px-1">
+              {/* Left Arrow Button */}
+              <button
+                type="button"
+                onClick={() => scrollTestimonial('left')}
+                disabled={activeTestimonialIndex === 0}
+                className="w-8 h-8 rounded-full bg-surface border border-border-custom text-primary hover:bg-brand-accent hover:text-surface shadow-md flex items-center justify-center absolute -left-2 top-1/2 -translate-y-1/2 z-20 transition-all cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed active:scale-95 shrink-0"
+                aria-label="Previous testimonial"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+
+              {/* Right Arrow Button */}
+              <button
+                type="button"
+                onClick={() => scrollTestimonial('right')}
+                disabled={activeTestimonialIndex === testimonials.length - 1}
+                className="w-8 h-8 rounded-full bg-surface border border-border-custom text-primary hover:bg-brand-accent hover:text-surface shadow-md flex items-center justify-center absolute -right-2 top-1/2 -translate-y-1/2 z-20 transition-all cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed active:scale-95 shrink-0"
+                aria-label="Next testimonial"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+
+              {/* Scroll Container */}
+              <div
+                ref={testimonialRef}
+                onScroll={handleTestimonialScroll}
+                className="w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth px-1 py-1"
+              >
+                {testimonials.map((t, i) => (
+                  <div
+                    key={i}
+                    className="w-full shrink-0 snap-center px-4 sm:px-6"
+                  >
+                    <div className="border border-border-custom p-6 sm:p-8 rounded-[16px] bg-surface shadow-xs flex flex-col justify-between min-h-[290px] h-[290px]">
+                      <div className="space-y-2">
+                        <div className="text-7xl sm:text-8xl text-brand-accent/40 font-display leading-none select-none -mb-3 font-serif">“</div>
+                        <p className="text-xs sm:text-sm text-body-custom leading-relaxed italic font-sans line-clamp-4">{t.quote}</p>
+                      </div>
+                      <div className="border-t border-border-custom pt-4 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-secondary-bg flex items-center justify-center shrink-0">
+                          <span className="text-xs font-semibold text-brand-accent">{t.avatarText}</span>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-xs font-semibold text-primary truncate font-sans">{t.author}</h4>
+                          <p className="text-[10px] text-muted-custom truncate font-sans">{t.role}, {t.city}</p>
+                        </div>
+                        <div className="flex gap-0.5 shrink-0">
+                          {[...Array(5)].map((_, s) => (
+                            <span key={s} className="text-xs text-secondary-accent font-sans">★</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Dots */}
+            <div className="flex items-center justify-center gap-2 mt-4">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => scrollTestimonialToIndex(i)}
+                  aria-label={`Go to testimonial ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 ease-out cursor-pointer ${
+                    i === activeTestimonialIndex
+                      ? 'w-5 bg-brand-accent'
+                      : 'w-2 bg-border-custom hover:bg-muted-custom'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </SectionWrapper>
 
@@ -286,17 +526,60 @@ export default function Home({ navigate }: Props) {
               <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Campaign Spreads on Socials</h2>
             </div>
             
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-4 mb-8">
-              {igImages.map((src, i) => (
-                <div key={i} className="group relative overflow-hidden rounded-[12px] shadow-sm">
-                  <ImgBox 
-                    className="w-full h-full" 
-                    aspect="1/1" 
-                    src={src} 
-                    label={`IG LOOK ${i + 1}`} 
-                    alt={`Saree styling photography IG look ${i + 1}`} 
-                  />
-                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">
+              {socialItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.link || 'https://instagram.com'}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative overflow-hidden rounded-[16px] shadow-sm border border-border-custom bg-surface block aspect-[9/16] transition-all duration-300 hover:shadow-lg hover:border-brand-accent/60"
+                >
+                  {item.type === 'video' ? (
+                    <video
+                      src={item.src}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt={item.title || 'Campaign Look'}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
+
+                  {/* Top Badge: Video Reel / Image indicator */}
+                  <div className="absolute top-2.5 right-2.5 bg-black/50 backdrop-blur-xs text-surface text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-medium z-10">
+                    {item.type === 'video' ? (
+                      <>
+                        <svg className="w-3 h-3 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                        </svg>
+                        <span>REEL</span>
+                      </>
+                    ) : (
+                      <svg className="w-3 h-3 text-surface/80" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                      </svg>
+                    )}
+                  </div>
+
+                  {/* Gradient Overlay & Title */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 text-surface">
+                    <p className="text-[11px] font-semibold tracking-wide leading-tight drop-shadow-sm">
+                      {item.title}
+                    </p>
+                    <span className="text-[9px] text-brand-accent tracking-widest uppercase font-bold mt-1">
+                      View on IG →
+                    </span>
+                  </div>
+                </a>
               ))}
             </div>
             <div className="text-center">

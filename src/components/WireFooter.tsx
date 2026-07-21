@@ -19,7 +19,7 @@ export default function WireFooter({ navigate }: Props) {
     },
     {
       name: 'WhatsApp',
-      url: 'https://wa.me/919876543210',
+      url: 'https://wa.me/919967998080',
       svg: (
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.982L2 22l5.233-1.371a9.994 9.994 0 004.778 1.205h.004c5.505 0 9.989-4.478 9.99-9.984a9.965 9.965 0 00-2.92-7.063A9.966 9.966 0 0012.012 2zm5.835 14.165c-.32.9-1.845 1.637-2.536 1.742-.69.105-1.547.19-4.577-.962-3.882-1.478-6.393-5.398-6.586-5.653-.193-.255-1.547-2.037-1.547-3.878 0-1.84.965-2.747 1.31-3.1.345-.353.9-.51 1.39-.51.162 0 .307.009.434.017.373.024.56.04.805.586.255.57.87 2.115.945 2.27.076.155.127.336.026.544-.1.21-.2.34-.396.574-.197.234-.413.527-.588.707-.197.202-.405.422-.172.825.233.402.936 1.54 2.01 2.49 1.385 1.226 2.55 1.607 2.915 1.76.365.153.58.127.794-.12.214-.247.925-1.077 1.173-1.448.247-.37.495-.31.833-.185.337.125 2.146 1.01 2.507 1.19.362.18.6.27.69.424.09.155.09 1.025-.23 1.925z"></path>
@@ -49,36 +49,36 @@ export default function WireFooter({ navigate }: Props) {
   const handleLinkClick = (item: string) => {
     if (item === 'Home') navigate('home')
     else if (item === 'About Us' || item === 'About') navigate('about')
-    else if (item === 'Collections' || item === 'Sarees' || item === 'Lehengas' || item === 'Salwar Suits' || item === 'Kurtas' || item === 'Dupattas') navigate('collections')
+    else if (item === 'Collections' || item === 'Cord Sets' || item === 'Dupatta Set' || item === 'Kurties' || item === 'Pant/Plazzo set' || item === 'Short Tops') navigate('collections')
     else if (item === 'Contact' || item === 'WhatsApp') navigate('contact')
     else if (item === 'Admin Portal') navigate('admin')
   }
 
   return (
     <footer className="border-t border-border-custom bg-secondary-bg">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 pb-8">
         {/* Grid layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-16">
           {/* Brand Column */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="flex items-start select-none">
               <img
                 src="/JINA Logo.png"
                 alt="Jina Fashion Logo"
-                className="h-10 sm:h-12 w-auto object-contain"
+                className="h-8 sm:h-10 lg:h-12 w-auto object-contain"
               />
             </div>
-            <p className="text-sm text-body-custom leading-relaxed font-sans max-w-xs">
-              Luxury Within Reach. Prominent manufacturer and wholesale distributor of premium women's ethnic clothing. Serving retail clients and boutiques worldwide.
+            <p className="text-xs sm:text-sm text-body-custom leading-relaxed font-sans max-w-xs">
+              Luxury Within Reach. Prominent manufacturer and wholesale distributor of premium women's ethnic clothing serving retail clients & boutiques worldwide.
             </p>
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-2.5 pt-1">
               {socialIcons.map(soc => (
                 <a
                   key={soc.name}
                   href={soc.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-9 h-9 border border-border-custom bg-surface rounded-[8px] flex items-center justify-center text-body-custom hover:text-brand-accent hover:border-brand-accent transition-all duration-300 shadow-sm hover:shadow"
+                  className="w-8 h-8 sm:w-9 sm:h-9 border border-border-custom bg-surface rounded-[8px] flex items-center justify-center text-body-custom hover:text-brand-accent hover:border-brand-accent transition-all duration-300 shadow-xs hover:shadow"
                   aria-label={soc.name}
                 >
                   {soc.svg}
@@ -87,66 +87,72 @@ export default function WireFooter({ navigate }: Props) {
             </div>
           </div>
 
-          {/* Quick Links Column */}
-          <div>
-            <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-4 border-b border-border-custom pb-2">Quick Links</div>
-            <ul className="space-y-3">
-              {['Home', 'About Us', 'Collections', 'Contact', 'Admin Portal'].map(item => (
-                <li key={item}>
-                  <button
-                    onClick={() => handleLinkClick(item)}
-                    className="text-xs text-body-custom hover:text-brand-accent tracking-wide transition-colors cursor-pointer text-left"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Quick Links & Collections Row on Mobile (2-column side-by-side) */}
+          <div className="grid grid-cols-2 gap-6 sm:contents">
+            {/* Quick Links Column */}
+            <div>
+              <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-3 sm:mb-4 border-b border-border-custom pb-2">Quick Links</div>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {['Home', 'About Us', 'Collections', 'Contact', 'Admin Portal'].map(item => (
+                  <li key={item}>
+                    <button
+                      onClick={() => handleLinkClick(item)}
+                      className="text-xs text-body-custom hover:text-brand-accent tracking-wide transition-colors cursor-pointer text-left"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Collections Column */}
-          <div>
-            <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-4 border-b border-border-custom pb-2">Collections</div>
-            <ul className="space-y-3">
-              {['Sarees', 'Lehengas', 'Salwar Suits', 'Kurtas', 'Dupattas'].map(item => (
-                <li key={item}>
-                  <button
-                    onClick={() => handleLinkClick(item)}
-                    className="text-xs text-body-custom hover:text-brand-accent tracking-wide transition-colors cursor-pointer text-left"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {/* Collections Column */}
+            <div>
+              <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-3 sm:mb-4 border-b border-border-custom pb-2">Collections</div>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {['Cord Sets', 'Dupatta Set', 'Kurties', 'Pant/Plazzo set', 'Short Tops'].map(item => (
+                  <li key={item}>
+                    <button
+                      onClick={() => handleLinkClick(item)}
+                      className="text-xs text-body-custom hover:text-brand-accent tracking-wide transition-colors cursor-pointer text-left"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact Column */}
           <div>
-            <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-4 border-b border-border-custom pb-2">Contact</div>
-            <ul className="space-y-3 font-sans text-xs text-body-custom">
+            <div className="text-[10px] tracking-[0.2em] uppercase text-primary font-bold mb-3 sm:mb-4 border-b border-border-custom pb-2">Contact</div>
+            <ul className="space-y-2.5 sm:space-y-3 font-sans text-xs text-body-custom">
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">HQ:</span>
-                <span>402, Senapati Bapat Marg, Lower Parel, Mumbai, MH - 400013</span>
+                <span>Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">Tel:</span>
-                <a href="tel:+919876543210" className="hover:text-brand-accent transition-colors">+91 98765 43210</a>
+                <div className="flex flex-col gap-0.5">
+                  <a href="tel:+919967998080" className="hover:text-brand-accent transition-colors">+91 99679 98080</a>
+                  <a href="tel:+919892028161" className="hover:text-brand-accent transition-colors">+91 98920 28161</a>
+                </div>
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">Mail:</span>
-                <a href="mailto:order.jinafashion@gmail.com" className="hover:text-brand-accent transition-colors">order.jinafashion@gmail.com</a>
+                <a href="mailto:order.jinafashion@gmail.com" className="hover:text-brand-accent transition-colors truncate">order.jinafashion@gmail.com</a>
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">WA:</span>
-                <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="hover:text-brand-accent transition-colors underline decoration-brand-accent underline-offset-4">Chat on WhatsApp</a>
+                <a href="https://wa.me/919967998080" target="_blank" rel="noreferrer" className="hover:text-brand-accent transition-colors underline decoration-brand-accent underline-offset-4 font-medium">+91 99679 98080</a>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="border-t border-border-custom pt-6 sm:pt-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4">
+        <div className="border-t border-border-custom pt-6 sm:pt-8 flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
           <span className="text-[11px] text-muted-custom">© 2026 Jina Fashion. All rights reserved.</span>
           <div className="flex gap-6">
             {['Privacy Policy', 'Terms of Use'].map(l => (

@@ -22,7 +22,7 @@ export function ImgBox({
   noHover?: boolean
 }) {
   if (src) {
-    const scaleClass = noHover ? "" : "group-hover:scale-105"
+    const scaleClass = ""
     const overlayClass = noHover ? "hidden" : "absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
     const bgClass = bgTransparent ? "bg-transparent" : "bg-secondary-bg"
     const fitClass = 
@@ -31,9 +31,11 @@ export function ImgBox({
       objectFit === 'scale-down' ? 'object-scale-down' : 
       'object-cover'
 
+    const roundedClass = className.includes('rounded') ? '' : 'rounded-[12px]'
+
     return (
       <div
-        className={`relative overflow-hidden group rounded-[12px] ${bgClass} ${className}`}
+        className={`relative overflow-hidden group ${roundedClass} ${bgClass} ${className}`}
         style={aspect ? { aspectRatio: aspect } : undefined}
       >
         <img
