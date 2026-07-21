@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import type { Page } from '../App'
 import { useProducts, Product } from '../context/ProductContext'
 import { useSocial } from '../context/SocialContext'
@@ -76,17 +77,7 @@ async function uploadToCloudinary(
   })
 }
 
-// ── Preset sample images (fallback when no file is uploaded) ─────────────────
-const IMAGE_PRESETS = [
-  { label: 'Red Bridal Silk Saree', url: 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Gold Zardozi Silk', url: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Embroidered Lehenga', url: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Royal Velvet Lehenga', url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Classic Salwar Suit', url: 'https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Chanderi Designer Suit', url: 'https://images.unsplash.com/photo-1631857455684-a54a2f03665f?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Anarkali Block Kurta', url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Luxury Silk Dupatta', url: 'https://images.unsplash.com/photo-1590075865003-e48277faa558?auto=format&fit=crop&q=80&w=600' },
-]
+
 
 export default function Admin({ navigate }: Props) {
   const {
@@ -212,7 +203,7 @@ export default function Admin({ navigate }: Props) {
     description: '',
     status: 'In Stock' as const,
     featured: false,
-    src: IMAGE_PRESETS[0].url,
+    src: '',
     cloudinaryPublicId: '',
   }
   const [formData, setFormData] = useState(defaultForm)
@@ -720,171 +711,194 @@ export default function Admin({ navigate }: Props) {
       </SectionWrapper>
 
       {/* ── Add/Edit Modal ── */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-primary/75 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="bg-surface rounded-2xl border border-border-custom shadow-2xl max-w-lg w-full p-6 sm:p-7 my-auto space-y-6 max-h-[90vh] overflow-y-auto">
+      {isModalOpen && createPortal(
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 sm:p-6 pb-28 sm:pb-6 bg-primary/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+          <div className="bg-surface rounded-3xl border border-border-custom shadow-2xl max-w-md sm:max-w-lg w-full flex flex-col max-h-[85vh] sm:max-h-[88vh] my-auto overflow-hidden">
 
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-border-custom pb-4">
+            <div className="flex items-center justify-between px-6 py-4 sm:py-5 border-b border-border-custom bg-surface shrink-0">
               <div>
-                <span className="text-[10px] font-bold tracking-[0.18em] text-brand-accent uppercase block">
-                  {editingProduct ? 'Edit Product' : 'New Product'}
+                <span className="text-[10px] font-bold tracking-widest text-brand-accent uppercase block">
+                  {editingProduct ? 'Catalogue Management' : 'New Catalogue Item'}
                 </span>
-                <h3 className="font-display text-2xl font-semibold text-primary mt-0.5">
-                  {editingProduct ? 'Update Product Details' : 'Add New Product'}
+                <h3 className="font-display text-xl sm:text-2xl font-semibold text-primary mt-0.5">
+                  {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-secondary-bg hover:bg-border-custom flex items-center justify-center text-muted-custom hover:text-primary transition-colors cursor-pointer text-sm font-semibold"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary-bg hover:bg-border-custom flex items-center justify-center text-muted-custom hover:text-primary transition-colors cursor-pointer text-sm font-semibold"
                 aria-label="Close modal"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleSubmitForm} className="space-y-5">
-              {/* Product Name */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary">
-                  Product Name <span className="text-brand-accent">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Pure Chanderi Silk Saree"
-                  value={formData.name}
-                  onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent focus:bg-surface transition-all placeholder:text-muted-custom/60"
-                />
-              </div>
+            {/* Form Body */}
+            <form onSubmit={handleSubmitForm} className="flex flex-col overflow-hidden flex-1">
+              <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
 
-              {/* Category */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary">
-                  Category <span className="text-brand-accent">*</span>
-                </label>
-                <select
-                  value={formData.category}
-                  onChange={e => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent focus:bg-surface transition-all cursor-pointer font-medium"
-                >
-                  {['Cord Sets', 'Dupatta Set', 'Kurties', 'Pant/Plazzo set', 'Short Tops'].map(c => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
+                {/* Product Name */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-primary">
+                    Product Name <span className="text-brand-accent">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Pure Chanderi Silk Saree"
+                    value={formData.name}
+                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-secondary-bg/50 border border-border-custom rounded-xl px-4 py-3 text-xs text-primary focus:outline-none focus:border-brand-accent focus:bg-surface focus:ring-2 focus:ring-brand-accent/10 transition-all placeholder:text-muted-custom/50 font-medium"
+                  />
+                </div>
 
-              {/* Product Image */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-primary">
-                  Product Image
-                </label>
+                {/* Category */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-primary">
+                    Category <span className="text-brand-accent">*</span>
+                  </label>
+                  <select
+                    value={formData.category}
+                    onChange={e => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full bg-secondary-bg/50 border border-border-custom rounded-xl px-4 py-3 text-xs text-primary focus:outline-none focus:border-brand-accent focus:bg-surface transition-all cursor-pointer font-medium"
+                  >
+                    {['Cord Sets', 'Dupatta Set', 'Kurties', 'Pant/Plazzo set', 'Short Tops'].map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
 
-                {/* Dropzone / Upload area */}
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="group border-2 border-dashed border-border-custom hover:border-brand-accent/70 rounded-2xl p-4 text-center cursor-pointer transition-all bg-secondary-bg/30 hover:bg-secondary-bg/60 relative flex flex-col items-center justify-center min-h-[140px]"
-                >
-                  {uploadPreview ? (
-                    <div className="relative">
-                      <img src={uploadPreview} alt="Upload preview" className="h-28 w-24 object-cover rounded-xl shadow-md border border-border-custom" />
-                      <span className="absolute -top-2 -right-2 bg-brand-accent text-surface text-[9px] font-bold px-2 py-0.5 rounded-full shadow">New</span>
-                    </div>
-                  ) : formData.src ? (
-                    <div className="relative">
-                      <img src={formData.src} alt="Current product" className="h-28 w-24 object-cover rounded-xl shadow-md border border-border-custom" />
-                    </div>
-                  ) : (
-                    <div className="py-2 flex flex-col items-center">
-                      <div className="w-10 h-10 rounded-full bg-surface border border-border-custom flex items-center justify-center text-muted-custom group-hover:text-brand-accent group-hover:border-brand-accent/40 transition-colors mb-2">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 002.25 2.25z" />
-                        </svg>
+                {/* ── Product Image Upload & Link Section ── */}
+                <div className="space-y-3 pt-3 border-t border-border-custom/80">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-primary">
+                      Product Image
+                    </label>
+                    <span className="text-[10px] text-muted-custom">Upload file or paste direct URL</span>
+                  </div>
+
+                  {/* Clean Upload Dropzone */}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="group border-2 border-dashed border-border-custom hover:border-brand-accent/70 rounded-2xl p-4 text-center cursor-pointer transition-all bg-secondary-bg/20 hover:bg-secondary-bg/50 relative flex flex-col items-center justify-center min-h-[120px]"
+                  >
+                    {uploadPreview ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="relative group/img">
+                          <img src={uploadPreview} alt="Upload preview" className="h-24 w-20 object-cover rounded-xl shadow-md border border-border-custom" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setUploadFile(null)
+                              setUploadPreview(null)
+                            }}
+                            className="absolute -top-2 -right-2 bg-rose-500 text-surface rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-md hover:bg-rose-600 transition-colors"
+                            title="Remove selected file"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-brand-accent font-semibold truncate max-w-[200px]">
+                          Selected: {uploadFile?.name}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="py-2 flex flex-col items-center">
+                        <div className="w-10 h-10 rounded-2xl bg-surface border border-border-custom flex items-center justify-center text-muted-custom group-hover:text-brand-accent group-hover:border-brand-accent/40 shadow-xs transition-colors mb-2">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 002.25 2.25z" />
+                          </svg>
+                        </div>
+                        <p className="text-xs text-primary font-semibold">
+                          Click to upload image
+                        </p>
+                        <p className="text-[11px] text-muted-custom mt-0.5">
+                          JPG, PNG, WebP, AVIF — max 10MB
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+
+                  {/* Upload Progress Bar */}
+                  {isUploading && (
+                    <div className="space-y-1.5 pt-1">
+                      <div className="flex items-center justify-between text-[11px] text-body-custom font-medium">
+                        <span>Uploading to Cloudinary...</span>
+                        <span className="font-mono text-brand-accent font-bold">{uploadProgress}%</span>
+                      </div>
+                      <div className="h-2 bg-secondary-bg rounded-full overflow-hidden border border-border-custom/50">
+                        <div className="h-full bg-brand-accent transition-all duration-200 rounded-full" style={{ width: `${uploadProgress}%` }} />
                       </div>
                     </div>
                   )}
 
-                  <p className="text-xs text-body-custom font-medium mt-2">
-                    Click to upload image <span className="text-muted-custom font-normal text-[11px]">(JPG, PNG, WebP, AVIF - max 10MB)</span>
-                  </p>
-                  {uploadFile && (
-                    <p className="text-[11px] text-brand-accent font-semibold mt-1">
-                      Selected: {uploadFile.name}
-                    </p>
-                  )}
-                </div>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/avif"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-
-                {/* Upload progress */}
-                {isUploading && (
-                  <div className="space-y-1 pt-1">
-                    <div className="flex items-center justify-between text-[10px] text-body-custom">
-                      <span>Uploading image to cloud...</span>
-                      <span className="font-mono">{uploadProgress}%</span>
-                    </div>
-                    <div className="h-1.5 bg-secondary-bg rounded-full overflow-hidden">
-                      <div className="h-full bg-brand-accent transition-all duration-200 rounded-full" style={{ width: `${uploadProgress}%` }} />
-                    </div>
-                  </div>
-                )}
-
-                {/* Image URL Input */}
-                <div className="pt-2">
-                  <label className="block text-[10px] font-bold text-muted-custom uppercase tracking-wider mb-1">
-                    Or paste Image URL:
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="https://images.unsplash.com/..."
-                    value={formData.src}
-                    onChange={e => {
-                      setFormData({ ...formData, src: e.target.value })
-                      setUploadFile(null)
-                      setUploadPreview(null)
-                    }}
-                    className="w-full bg-secondary-bg/60 border border-border-custom rounded-xl px-3.5 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent transition-all text-[11px]"
-                  />
-                </div>
-
-                {/* Sample Presets */}
-                <div className="pt-2 space-y-1.5">
-                  <span className="text-[10px] font-bold text-muted-custom uppercase tracking-wider block">
-                    Sample Images:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto p-1 border border-border-custom/50 rounded-xl bg-secondary-bg/20">
-                    {IMAGE_PRESETS.map((p, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => {
-                          setFormData({ ...formData, src: p.url })
+                  {/* Image URL Input */}
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-muted-custom uppercase tracking-wider">
+                      Or direct Image URL:
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="url"
+                        placeholder="https://images.unsplash.com/..."
+                        value={formData.src}
+                        onChange={e => {
+                          setFormData({ ...formData, src: e.target.value })
                           setUploadFile(null)
                           setUploadPreview(null)
                         }}
-                        className={`text-[10px] px-2.5 py-1 rounded-lg border transition-all cursor-pointer font-medium ${
-                          formData.src === p.url && !uploadFile
-                            ? 'bg-brand-accent text-surface border-brand-accent font-bold shadow-xs'
-                            : 'bg-surface text-body-custom border-border-custom hover:border-brand-accent hover:text-primary'
-                        }`}
-                      >
-                        {p.label}
-                      </button>
-                    ))}
+                        className="flex-1 bg-secondary-bg/50 border border-border-custom rounded-xl px-3.5 py-2.5 text-xs text-primary focus:outline-none focus:border-brand-accent transition-all"
+                      />
+                      {formData.src && (
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, src: '' })}
+                          className="px-2.5 py-2 text-[11px] font-semibold text-muted-custom hover:text-rose-500 bg-secondary-bg rounded-xl border border-border-custom transition-colors cursor-pointer shrink-0"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
                   </div>
+
+                  {/* Active Product Image Preview (if image URL exists and no file chosen) */}
+                  {formData.src && !uploadPreview && (
+                    <div className="flex items-center gap-3 p-2.5 bg-secondary-bg/30 border border-border-custom rounded-2xl">
+                      <img
+                        src={formData.src}
+                        alt="Product thumbnail"
+                        className="w-12 h-14 object-cover rounded-xl border border-border-custom shrink-0 shadow-xs"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none'
+                        }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-brand-accent block">
+                          Active Image Preview
+                        </span>
+                        <p className="text-[11px] text-body-custom font-mono truncate mt-0.5">
+                          {formData.src}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-custom">
+              {/* Sticky Modal Footer */}
+              <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border-custom bg-surface shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
@@ -905,12 +919,13 @@ export default function Admin({ navigate }: Props) {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── Delete Confirm Modal ── */}
-      {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary/75 backdrop-blur-sm animate-fade-in">
+      {deleteConfirmId && createPortal(
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 pb-24 sm:pb-4 bg-primary/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-surface rounded-3xl border border-border-custom shadow-2xl max-w-sm w-full p-7 space-y-6 text-center">
             <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl">⚠️</div>
             <div>
@@ -928,12 +943,13 @@ export default function Admin({ navigate }: Props) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── Add Social Media Reel / Image Modal ── */}
-      {isSocialModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-primary/75 backdrop-blur-md animate-fade-in overflow-y-auto">
+      {isSocialModalOpen && createPortal(
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 sm:p-6 pb-28 sm:pb-6 bg-primary/80 backdrop-blur-md animate-fade-in overflow-y-auto">
           <div className="bg-surface rounded-2xl border border-border-custom shadow-2xl max-w-md w-full p-6 sm:p-7 my-auto space-y-6">
             <div className="flex items-start justify-between border-b border-border-custom pb-4">
               <div>
@@ -1060,7 +1076,8 @@ export default function Admin({ navigate }: Props) {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
