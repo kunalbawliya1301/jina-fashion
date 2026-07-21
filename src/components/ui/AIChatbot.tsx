@@ -184,7 +184,7 @@ export function AIChatbot() {
                   <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-black" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold tracking-wide text-white font-display">Maya — AI Assistant</h3>
+                  <h3 className="text-sm font-semibold tracking-wide text-white font-display">Maya | AI Assistant</h3>
                   <span className="text-[10px] text-white/50 tracking-wider uppercase font-medium">Online</span>
                 </div>
               </div>

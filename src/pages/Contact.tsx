@@ -71,7 +71,7 @@ export default function Contact() {
     },
     {
       label: 'HOURS',
-      value: 'Monday to Saturday: 10:00 AM — 7:00 PM (IST)',
+      value: 'Monday to Saturday: 10:00 AM - 7:00 PM (IST)',
       svg: (
         <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
