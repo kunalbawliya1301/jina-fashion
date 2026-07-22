@@ -31,13 +31,13 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
 
     const cld = getCloudinary()
 
-    const paramsToSign: Record<string, unknown> = {
+    const paramsToSign: Record<string, string | number> = {
       timestamp,
       folder,
-      upload_preset:   uploadPreset,
-      allowed_formats: 'jpg,jpeg,png,webp,avif',
-      transformation:  'q_auto,f_auto',
-      max_file_size:   10_485_760, // 10 MB
+      transformation: 'q_auto,f_auto',
+    }
+    if (uploadPreset) {
+      paramsToSign.upload_preset = uploadPreset
     }
 
     const signature = cld.utils.api_sign_request(
@@ -45,7 +45,7 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
       process.env.CLOUDINARY_API_SECRET as string
     )
 
-    ok(res, { signature, timestamp, folder, uploadPreset, cloudName, apiKey })
+    ok(res, { signature, timestamp, folder, uploadPreset, cloudName, apiKey, paramsToSign })
     return
   }
 

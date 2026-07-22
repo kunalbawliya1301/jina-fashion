@@ -17,11 +17,12 @@ const API_BASE = import.meta.env.VITE_API_URL || '/api'
 // ─────────────────────────────────────────────────────────────────────────────
 interface CloudinarySignature {
   signature: string
-  timestamp: number
-  folder: string
-  uploadPreset: string
+  timestamp?: number
+  folder?: string
+  uploadPreset?: string
   cloudName: string
   apiKey: string
+  paramsToSign?: Record<string, string | number>
 }
 
 async function getUploadSignature(token: string): Promise<CloudinarySignature> {
@@ -42,12 +43,19 @@ async function uploadToCloudinary(
   return new Promise((resolve, reject) => {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('signature', sig.signature)
-    formData.append('timestamp', String(sig.timestamp))
-    formData.append('folder', sig.folder)
-    formData.append('upload_preset', sig.uploadPreset)
     formData.append('api_key', sig.apiKey)
-    formData.append('transformation', 'q_auto,f_auto')
+    formData.append('signature', sig.signature)
+
+    if (sig.paramsToSign) {
+      for (const [key, value] of Object.entries(sig.paramsToSign)) {
+        formData.append(key, String(value))
+      }
+    } else {
+      if (sig.timestamp) formData.append('timestamp', String(sig.timestamp))
+      if (sig.folder) formData.append('folder', sig.folder)
+      if (sig.uploadPreset) formData.append('upload_preset', sig.uploadPreset)
+      formData.append('transformation', 'q_auto,f_auto')
+    }
 
     const xhr = new XMLHttpRequest()
 
