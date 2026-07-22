@@ -34,6 +34,7 @@ export default function Collections({ navigate }: Props) {
   const handleFilter = (category: string) => {
     setSelectedFilter(category)
     setCurrentPage(1)
+    galleryRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   // Filter items matching state
