@@ -285,7 +285,7 @@ export default function Collections({ navigate }: Props) {
                 Request Catalogue
               </button>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919967998080"
                 target="_blank"
                 rel="noreferrer"
                 className="w-full sm:w-auto border border-neutral-600 hover:border-surface text-surface px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase rounded-[12px] text-center transition-colors cursor-pointer"

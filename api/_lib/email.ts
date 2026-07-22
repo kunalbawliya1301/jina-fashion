@@ -103,7 +103,7 @@ export async function sendInquiryEmails(data: ContactEmailData): Promise<void> {
 
         <div style="background-color: #faf5ff; border: 1px solid #e9d8fd; padding: 16px; border-radius: 8px; margin: 20px 0;">
           <p style="margin: 0; font-weight: bold; color: #6b46c1;">Need Urgent Catalog Dispatch?</p>
-          <p style="margin: 4px 0 0; font-size: 13px; color: #553c9a;">You can reach our sales team directly on WhatsApp or Call: <strong>+91 98765 43210</strong></p>
+          <p style="margin: 4px 0 0; font-size: 13px; color: #553c9a;">You can reach our sales team directly on WhatsApp or Call: <strong>+91 99679 98080</strong></p>
         </div>
 
         <p>Warm regards,<br><strong>Wholesale Sales Team</strong><br>Jina Fashion, Mumbai</p>
