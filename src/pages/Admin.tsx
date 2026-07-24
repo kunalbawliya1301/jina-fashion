@@ -296,20 +296,20 @@ export default function Admin({ navigate }: Props) {
       }
 
       if (socialEditingId) {
-        updateSocialItem(socialEditingId, {
+        await updateSocialItem(socialEditingId, {
           type: socialForm.type,
           src: finalSrc,
           title: socialForm.title || (socialForm.type === 'video' ? 'Campaign Reel' : 'Campaign Spread'),
           link: socialForm.link || 'https://www.instagram.com/_jina_fashion',
-        })
+        }, token)
         showToast('Social campaign spread updated! ✅')
       } else {
-        addSocialItem({
+        await addSocialItem({
           type: socialForm.type,
           src: finalSrc,
           title: socialForm.title || (socialForm.type === 'video' ? 'Campaign Reel' : 'Campaign Spread'),
           link: socialForm.link || 'https://www.instagram.com/_jina_fashion',
-        })
+        }, token)
         showToast('New video reel / media added to campaign! ✅')
       }
 
@@ -840,8 +840,8 @@ export default function Admin({ navigate }: Props) {
                         ✏️
                       </button>
                       <button
-                        onClick={() => {
-                          deleteSocialItem(item.id)
+                        onClick={async () => {
+                          await deleteSocialItem(item.id, token)
                           showToast('Item deleted from campaign spreads')
                         }}
                         className="bg-rose-600 hover:bg-rose-700 text-surface p-1.5 rounded-lg text-xs transition-colors cursor-pointer"

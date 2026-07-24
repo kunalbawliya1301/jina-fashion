@@ -99,6 +99,18 @@ export function viteDevApiPlugin(): Plugin {
             return await mod.default(req, res)
           }
 
+          if (pathname === '/api/social') {
+            const mod = await server.ssrLoadModule('./api/social/index.ts')
+            return await mod.default(req, res)
+          }
+
+          const socialMatch = pathname.match(/^\/api\/social\/([^/]+)$/)
+          if (socialMatch) {
+            req.query.id = socialMatch[1]
+            const mod = await server.ssrLoadModule('./api/social/[id].ts')
+            return await mod.default(req, res)
+          }
+
           res.status(404).json({ success: false, message: `Route not found: ${req.method} ${pathname}` })
         } catch (err: any) {
           console.error('[vite-dev-api] Error:', err)

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 
 export interface SocialItem {
   id: string
@@ -19,7 +19,7 @@ const DEFAULT_SOCIAL_ITEMS: SocialItem[] = [
   {
     id: 'social-2',
     type: 'video',
-    src: 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-posing-in-a-black-dress-41133-large.mp4',
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     title: 'Bridal Lehenga Lookbook Reel',
     link: 'https://www.instagram.com/_jina_fashion',
   },
@@ -33,7 +33,7 @@ const DEFAULT_SOCIAL_ITEMS: SocialItem[] = [
   {
     id: 'social-4',
     type: 'video',
-    src: 'https://assets.mixkit.co/videos/preview/mixkit-model-catwalking-in-a-fashion-show-41050-large.mp4',
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     title: 'Summer Cord Sets Showcase',
     link: 'https://www.instagram.com/_jina_fashion',
   },
@@ -54,13 +54,16 @@ const DEFAULT_SOCIAL_ITEMS: SocialItem[] = [
 ]
 
 const STORAGE_KEY = 'jina_social_campaign_items_v2'
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 interface SocialContextType {
   items: SocialItem[]
-  addItem: (item: Omit<SocialItem, 'id'>) => void
-  updateItem: (id: string, item: Partial<SocialItem>) => void
-  deleteItem: (id: string) => void
+  loading: boolean
+  addItem: (item: Omit<SocialItem, 'id'>, token?: string | null) => Promise<void>
+  updateItem: (id: string, item: Partial<SocialItem>, token?: string | null) => Promise<void>
+  deleteItem: (id: string, token?: string | null) => Promise<void>
   resetToDefaults: () => void
+  fetchSocialItems: () => Promise<void>
 }
 
 const SocialContext = createContext<SocialContextType | undefined>(undefined)
@@ -70,14 +73,74 @@ export function SocialProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
-        const parsed = JSON.parse(saved)
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed
+        let parsed = JSON.parse(saved)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Replace legacy mixkit URLs with reliable video CDN URLs instead of filtering them out
+          parsed = parsed.map((item: SocialItem) => {
+            if (item.src?.includes('mixkit.co')) {
+              return {
+                ...item,
+                type: 'video',
+                src: item.id === 'social-2'
+                  ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                  : 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+              }
+            }
+            return item
+          })
+          return parsed
+        }
       }
     } catch (e) {
       console.error('Failed to load social items from localStorage', e)
     }
     return DEFAULT_SOCIAL_ITEMS
   })
+  const [loading, setLoading] = useState(false)
+
+  // ── Fetch from API ────────────────────────────────────────────────────────
+  const fetchSocialItems = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`${API_BASE}/social`, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success && Array.isArray(data.items) && data.items.length > 0) {
+          const serverItems: SocialItem[] = data.items.map((item: SocialItem) => {
+            if (item.src?.includes('mixkit.co')) {
+              return {
+                ...item,
+                type: 'video',
+                src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+              }
+            }
+            return item
+          })
+
+          setItems(prevLocal => {
+            // Keep local custom uploads that are not on the server
+            const localCustom = prevLocal.filter(l =>
+              !serverItems.some(s => s.id === l.id || s.src === l.src)
+            )
+            const combined = [...localCustom, ...serverItems]
+            const finalItems = combined.length > 0 ? combined : DEFAULT_SOCIAL_ITEMS
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(finalItems))
+            return finalItems
+          })
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch social items from server API, using local cache:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchSocialItems()
+  }, [fetchSocialItems])
 
   useEffect(() => {
     try {
@@ -87,28 +150,84 @@ export function SocialProvider({ children }: { children: ReactNode }) {
     }
   }, [items])
 
-  const addItem = (newItem: Omit<SocialItem, 'id'>) => {
-    const item: SocialItem = {
-      ...newItem,
-      id: `social-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+  // ── Add Item ──────────────────────────────────────────────────────────────
+  const addItem = async (newItem: Omit<SocialItem, 'id'>, customToken?: string | null) => {
+    const tempId = `social-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`
+    const optimisticItem: SocialItem = { ...newItem, id: tempId }
+    setItems(prev => [optimisticItem, ...prev])
+
+    const token = customToken || sessionStorage.getItem('jina_admin_token')
+    if (token) {
+      try {
+        const res = await fetch(`${API_BASE}/social`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newItem),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.item) {
+            setItems(prev => prev.map(i => (i.id === tempId ? data.item : i)))
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to sync added social item to server:', err)
+      }
     }
-    setItems(prev => [item, ...prev])
   }
 
-  const updateItem = (id: string, updated: Partial<SocialItem>) => {
+  // ── Update Item ───────────────────────────────────────────────────────────
+  const updateItem = async (id: string, updated: Partial<SocialItem>, customToken?: string | null) => {
     setItems(prev => prev.map(item => (item.id === id ? { ...item, ...updated } : item)))
+
+    const token = customToken || sessionStorage.getItem('jina_admin_token')
+    if (token && !id.startsWith('social-')) {
+      try {
+        await fetch(`${API_BASE}/social/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updated),
+        })
+      } catch (err) {
+        console.warn('Failed to sync updated social item to server:', err)
+      }
+    }
   }
 
-  const deleteItem = (id: string) => {
+  // ── Delete Item ───────────────────────────────────────────────────────────
+  const deleteItem = async (id: string, customToken?: string | null) => {
     setItems(prev => prev.filter(item => item.id !== id))
+
+    const token = customToken || sessionStorage.getItem('jina_admin_token')
+    if (token && !id.startsWith('social-')) {
+      try {
+        await fetch(`${API_BASE}/social/${id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      } catch (err) {
+        console.warn('Failed to sync deleted social item to server:', err)
+      }
+    }
   }
 
   const resetToDefaults = () => {
     setItems(DEFAULT_SOCIAL_ITEMS)
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SOCIAL_ITEMS))
+    } catch (_e) { /* silent */ }
   }
 
   return (
-    <SocialContext.Provider value={{ items, addItem, updateItem, deleteItem, resetToDefaults }}>
+    <SocialContext.Provider value={{ items, loading, addItem, updateItem, deleteItem, resetToDefaults, fetchSocialItems }}>
       {children}
     </SocialContext.Provider>
   )

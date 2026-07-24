@@ -6,8 +6,13 @@ export default function SocialSection() {
   const { items: socialItems } = useSocial()
   const socialRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({})
   const isProgrammaticScroll = useRef(false)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleVideoError = (id: string) => {
+    setVideoErrors(prev => ({ ...prev, [id]: true }))
+  }
 
   // Calculate total dot pages (2 cards visible per page view)
   const totalPages = Math.ceil(socialItems.length / 2)
@@ -70,15 +75,29 @@ export default function SocialSection() {
                 className="shrink-0 w-[calc(50%-6px)] sm:w-auto snap-start group relative overflow-hidden rounded-[16px] shadow-sm border border-border-custom bg-surface block aspect-[9/16] transition-all duration-300 hover:shadow-lg hover:border-brand-accent/60"
               >
                 {item.type === 'video' ? (
-                  <video
-                    src={item.src}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  !videoErrors[item.id] ? (
+                    <video
+                      src={item.src}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      onError={() => handleVideoError(item.id)}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-900 flex flex-col items-center justify-center p-4 text-center text-surface">
+                      <div className="w-10 h-10 rounded-full bg-brand-accent/20 border border-brand-accent/40 flex items-center justify-center text-brand-accent mb-2">
+                        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-300">
+                        Instagram Reel
+                      </span>
+                    </div>
+                  )
                 ) : (
                   <img
                     src={item.src}
