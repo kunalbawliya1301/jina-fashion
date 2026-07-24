@@ -19,6 +19,8 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
       return
     }
 
+    const resourceType = req.body?.resourceType || 'image'
+    const isVideo      = resourceType === 'video'
     const timestamp    = Math.round(Date.now() / 1000)
     const folder       = 'jina-fashion-products'
     const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || 'jina_fashion_products'
@@ -34,8 +36,12 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
     const paramsToSign: Record<string, string | number> = {
       timestamp,
       folder,
-      transformation: 'q_auto,f_auto',
     }
+
+    if (!isVideo) {
+      paramsToSign.transformation = 'q_auto,f_auto'
+    }
+
     if (uploadPreset) {
       paramsToSign.upload_preset = uploadPreset
     }

@@ -206,10 +206,10 @@ export default function Home({ navigate }: Props) {
                 For over fifteen years, Jina Fashion has stood at the intersection of traditional handloom artistry and contemporary silhouettes. Headquartered in Mumbai, we manufacture women's ethnic wear catering to the demand of retail stores globally.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                We work directly with master weavers across textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades with distinct colors and comfort.
+                We work directly with master weavers across textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades with distinct colors and comfort. Our collection features everything from daily wear cotton kurtas to elaborates bridal ensembles, all crafted with attention to detail. 
               </p>
               
-              {/* Stats Grid */}
+              {/* Stats Grid
               <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-2">
                 {[
                   ['15+', 'Years Legacy'],
@@ -221,7 +221,7 @@ export default function Home({ navigate }: Props) {
                     <div className="text-[10px] sm:text-xs tracking-wider text-muted-custom uppercase font-medium">{label}</div>
                   </div>
                 ))}
-              </div>
+              </div> */}
 
               {/* CTA Button */}
               <div className="pt-2 flex justify-center sm:justify-start">
@@ -383,9 +383,10 @@ export default function Home({ navigate }: Props) {
           </div>
         </div>
       </SectionWrapper>
+      
 
       {/* ── TESTIMONIALS ── */}
-      <SectionWrapper label="TESTIMONIALS">
+      {/* <SectionWrapper label="TESTIMONIALS">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
           <div className="text-center mb-12 sm:mb-16 max-w-md mx-auto space-y-3">
             <div className="flex items-center justify-center gap-3">
@@ -396,7 +397,6 @@ export default function Home({ navigate }: Props) {
             <h2 className="font-display text-3xl sm:text-4xl text-primary font-normal">Feedback From Retail Partners</h2>
           </div>
 
-          {/* Desktop View: Static 3-Column Grid */}
           <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8">
             {testimonials.map((t, i) => (
               <div key={i} className="border border-border-custom p-8 rounded-[16px] bg-surface hover:shadow-md transition-all duration-300 flex flex-col justify-between space-y-6">
@@ -422,10 +422,9 @@ export default function Home({ navigate }: Props) {
             ))}
           </div>
 
-          {/* Mobile/Tablet View: Interactive Testimonial Carousel */}
           <div className="block lg:hidden relative">
             <div className="relative flex items-center px-1">
-              {/* Left Arrow Button */}
+              
               <button
                 type="button"
                 onClick={() => scrollTestimonial('left')}
@@ -438,7 +437,7 @@ export default function Home({ navigate }: Props) {
                 </svg>
               </button>
 
-              {/* Right Arrow Button */}
+              
               <button
                 type="button"
                 onClick={() => scrollTestimonial('right')}
@@ -451,7 +450,6 @@ export default function Home({ navigate }: Props) {
                 </svg>
               </button>
 
-              {/* Scroll Container */}
               <div
                 ref={testimonialRef}
                 onScroll={handleTestimonialScroll}
@@ -487,7 +485,7 @@ export default function Home({ navigate }: Props) {
               </div>
             </div>
 
-            {/* Navigation Dots */}
+                
             <div className="flex items-center justify-center gap-2 mt-4">
               {testimonials.map((_, i) => (
                 <button
@@ -505,7 +503,7 @@ export default function Home({ navigate }: Props) {
             </div>
           </div>
         </div>
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       {/* ── INSTAGRAM PREVIEW ── */}
       <SocialSection />
