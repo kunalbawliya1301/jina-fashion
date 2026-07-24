@@ -1,21 +1,71 @@
 import { useState, useRef } from 'react'
 import { SectionWrapper } from './Wire'
-import { useSocial } from '../context/SocialContext'
+
+export interface SocialItem {
+  id: string
+  type: 'image' | 'video'
+  src: string
+  title: string
+  link?: string
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 📸 HARDCODED CAMPAIGN REELS & POSTS
+// Cloudinary videos include `f_mp4,q_auto` to ensure H.264 web compatibility
+// ─────────────────────────────────────────────────────────────────────────────
+export const CAMPAIGN_REELS: SocialItem[] = [
+  {
+    id: 'reel-1',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784919279/jina-fashion-products/un54psgsok1n5sroyemh.mp4',
+    title: 'Top Bottom Stitch Kurti',
+    link: 'https://www.instagram.com/p/C9NJs--sWWK/',
+  },
+  {
+    id: 'reel-2',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784920612/jina-fashion-products/no5oy7judtsvuebwvh2c.mp4',
+    title: 'Kurti with Sequence Neck Work',
+    link: 'https://www.instagram.com/p/C_5avE6yVH6/',
+  },
+  {
+    id: 'reel-3',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784918581/jina-fashion-products/vqebfrnrnh3qqzk7b65q.mp4',
+    title: 'Cambric Cotton with Embroidery',
+    link: 'https://www.instagram.com/p/C7_4gXAs-Qw/',
+  },
+  {
+    id: 'reel-4',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784920259/jina-fashion-products/up5taxyugloqe83e3jcq.mp4',
+    title: 'Heavy Chikankari Embroidered Kurti',
+    link: 'https://www.instagram.com/p/C_IyYDHSwJ_/',
+  },
+  {
+    id: 'reel-5',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784918315/jina-fashion-products/gplsr9aeuutfejwwsjdm.mp4',
+    title: 'Heavy Chikankari Embroidered Kurti',
+    link: 'https://www.instagram.com/p/C_Nw_OQsDio/',
+  },
+  {
+    id: 'reel-6',
+    type: 'video',
+    src: 'https://res.cloudinary.com/kbzj8nfu/video/upload/f_mp4,q_auto/v1784918460/jina-fashion-products/zldheoxpdhp3j6tkreva.mp4',
+    title: 'Cambric Cotton with Embroidery',
+    link: 'https://www.instagram.com/p/C9W7pYqp7OO/',
+  },
+]
 
 export default function SocialSection() {
-  const { items: socialItems } = useSocial()
   const socialRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({})
   const isProgrammaticScroll = useRef(false)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleVideoError = (id: string) => {
-    setVideoErrors(prev => ({ ...prev, [id]: true }))
-  }
-
   // Calculate total dot pages (2 cards visible per page view)
-  const totalPages = Math.ceil(socialItems.length / 2)
+  const totalPages = Math.ceil(CAMPAIGN_REELS.length / 2)
 
   const handleScroll = () => {
     if (isProgrammaticScroll.current) return
@@ -60,13 +110,13 @@ export default function SocialSection() {
             </div>
             <h2 className="font-display text-2xl sm:text-3xl text-primary font-normal">Campaign Spreads on Socials</h2>
           </div>
-          
+
           <div
             ref={socialRef}
             onScroll={handleScroll}
             className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth gap-3 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:gap-4 sm:overflow-visible mb-6 pb-1"
           >
-            {socialItems.map((item) => (
+            {CAMPAIGN_REELS.map((item) => (
               <a
                 key={item.id}
                 href={item.link || 'https://www.instagram.com/_jina_fashion'}
@@ -75,38 +125,24 @@ export default function SocialSection() {
                 className="shrink-0 w-[calc(50%-6px)] sm:w-auto snap-start group relative overflow-hidden rounded-[16px] shadow-sm border border-border-custom bg-surface block aspect-[9/16] transition-all duration-300 hover:shadow-lg hover:border-brand-accent/60"
               >
                 {item.type === 'video' ? (
-                  !videoErrors[item.id] ? (
-                    <video
-                      src={item.src}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      onError={() => handleVideoError(item.id)}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-900 flex flex-col items-center justify-center p-4 text-center text-surface">
-                      <div className="w-10 h-10 rounded-full bg-brand-accent/20 border border-brand-accent/40 flex items-center justify-center text-brand-accent mb-2">
-                        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-300">
-                        Instagram Reel
-                      </span>
-                    </div>
-                  )
+                  <video
+                    src={item.src}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="w-full h-full object-cover transition-transform duration-500"
+                  />
                 ) : (
                   <img
                     src={item.src}
                     alt={item.title || 'Campaign Look'}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500"
                   />
                 )}
 
-                {/* Top Badge: Video Reel / Image indicator */}
+                {/* Top Badge */}
                 <div className="absolute top-2.5 right-2.5 bg-black/50 backdrop-blur-xs text-surface text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-medium z-10">
                   {item.type === 'video' ? (
                     <>
@@ -155,11 +191,11 @@ export default function SocialSection() {
             </div>
           )}
 
-          <div className="text-center">
-            <a 
-              href="https://www.instagram.com/_jina_fashion" 
-              target="_blank" 
-              rel="noreferrer" 
+          <div className="text-center mt-8">
+            <a
+              href="https://www.instagram.com/_jina_fashion"
+              target="_blank"
+              rel="noreferrer"
               className="inline-block border border-primary px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-primary hover:bg-primary hover:text-surface transition-all duration-300 rounded-[12px] bg-surface cursor-pointer shadow-sm hover:shadow"
             >
               Follow on Instagram

@@ -5,45 +5,6 @@ import { connectDB } from '../_lib/db'
 import { Limiters } from '../_lib/rateLimiter'
 import SocialItem from '../_lib/SocialItem'
 
-const DEFAULT_ITEMS = [
-  {
-    type: 'image',
-    src: '/Category/Cord Sets.png',
-    title: 'Silk Sarees Campaign Reel',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-  {
-    type: 'video',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    title: 'Bridal Lehenga Lookbook Reel',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-  {
-    type: 'image',
-    src: '/Category/Dupatta Set.png',
-    title: 'Festive Dupatta Drop',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-  {
-    type: 'video',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    title: 'Summer Cord Sets Showcase',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-  {
-    type: 'image',
-    src: '/Category/Kurties.png',
-    title: 'Designer Kurti Edit',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-  {
-    type: 'image',
-    src: '/Category/Short Tops.png',
-    title: 'Royal Ethnic Showcase',
-    link: 'https://www.instagram.com/_jina_fashion',
-  },
-]
-
 export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
   await connectDB()
 
@@ -51,23 +12,7 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
 
   // ── GET /api/social — public ────────────────────────────────────────────
   if (req.method === 'GET') {
-    let items = await SocialItem.find().sort({ createdAt: -1 }).lean()
-
-    // Purge legacy mixkit URLs if present in database
-    const hasMixkit = items.some(i => i.src?.includes('mixkit.co'))
-    if (hasMixkit) {
-      await SocialItem.deleteMany({ src: /mixkit\.co/ })
-      items = await SocialItem.find().sort({ createdAt: -1 }).lean()
-    }
-
-    if (items.length === 0) {
-      try {
-        const seeded = await SocialItem.insertMany(DEFAULT_ITEMS)
-        items = seeded.map(doc => doc.toJSON())
-      } catch (err) {
-        console.error('[social] Failed to seed default items:', err)
-      }
-    }
+    const items = await SocialItem.find().sort({ createdAt: -1 }).lean()
 
     const formatted = items.map(item => ({
       ...item,
@@ -109,6 +54,21 @@ export default withSecurity(async (req: VercelRequest, res: VercelResponse) => {
     }
 
     ok(res, { message: 'Social campaign item created.', item }, 201)
+    return
+  }
+
+  // ── DELETE /api/social — clear all social items (admin only) ─────────────
+  if (req.method === 'DELETE') {
+    requireAdmin(req.headers['authorization'])
+
+    const mutLimit = Limiters.mutation(ip)
+    if (!mutLimit.allowed) {
+      fail(res, 'Too many requests.', 429, { retryAfter: mutLimit.retryAfterSec })
+      return
+    }
+
+    await SocialItem.deleteMany({})
+    ok(res, { message: 'All social campaign items cleared.' })
     return
   }
 

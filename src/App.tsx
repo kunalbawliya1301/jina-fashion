@@ -7,7 +7,6 @@ import Collections from './pages/Collections'
 import Contact from './pages/Contact'
 import Admin from './pages/Admin'
 import { ProductProvider } from './context/ProductContext'
-import { SocialProvider } from './context/SocialContext'
 import { WhatsAppCTA } from './components/ui/WhatsAppCTA'
 import { AIChatbot } from './components/ui/AIChatbot'
 
@@ -32,17 +31,15 @@ export default function App() {
 
   return (
     <ProductProvider>
-      <SocialProvider>
-        <div className="min-h-screen flex flex-col bg-surface text-primary antialiased font-sans transition-colors duration-300">
-          <WireNav current={page} navigate={setPage} />
-          <main className="flex-grow">
-            {renderPage()}
-          </main>
-          <WireFooter navigate={setPage} />
-          <WhatsAppCTA />
-          <AIChatbot />
-        </div>
-      </SocialProvider>
+      <div className="min-h-screen flex flex-col bg-surface text-primary antialiased font-sans transition-colors duration-300">
+        <WireNav current={page} navigate={setPage} />
+        <main className="flex-grow">
+          {renderPage()}
+        </main>
+        <WireFooter navigate={setPage} />
+        <WhatsAppCTA />
+        <AIChatbot />
+      </div>
     </ProductProvider>
   )
 }
