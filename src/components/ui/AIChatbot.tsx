@@ -14,7 +14,7 @@ export function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm **Maya**, your AI assistant at **Jina Fashion**! 🌟 How can I help you today? Ask me about our wholesale saree catalogs, MOQs, bulk ordering, or custom manufacturing!",
+      content: "Hi! I'm **Maya**, your AI assistant at **Jina Fashion**! 🌟 How can I help you today? Ask me about our wholesale Cord Sets, Dupatta Sets, Kurties, Pant/Plazzo sets, Short Tops, MOQs, or custom manufacturing!",
     },
   ])
   const [input, setInput] = useState('')
