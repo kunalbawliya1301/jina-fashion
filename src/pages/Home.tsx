@@ -203,10 +203,10 @@ export default function Home({ navigate }: Props) {
                 For Modern Boutiques & Retailers
               </h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                For over fifteen years, Jina Fashion has stood at the intersection of traditional handloom artistry and contemporary silhouettes. Headquartered in Mumbai, we manufacture women's ethnic wear catering to the demand of retail stores globally.
+                At Jina Fashion, we believe ethnic wear is more than clothing, it's a reflection of culture, confidence, and individuality. Based in Kalbadevi, Mumbai, we manufacture premium women's ethnic wear that blends traditional craftsmanship with contemporary design.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                We work directly with master weavers across textile centers, bringing you pure georgettes, fine Chanderis, and rich silk brocades with distinct colors and comfort. Our collection features everything from daily wear cotton kurtas to elaborates bridal ensembles, all crafted with attention to detail. 
+                Built on a family legacy spanning over 100 years in the garment industry, we combine generations of expertise with modern manufacturing to create collections that are elegant, comfortable, and made for today's women. Every piece reflects our commitment to quality, consistency, and lasting value. 
               </p>
               
               {/* Stats Grid
