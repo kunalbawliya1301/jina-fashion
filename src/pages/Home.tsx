@@ -162,7 +162,7 @@ export default function Home({ navigate }: Props) {
 
   const testimonials = [
     {
-      quote: "Jina Fashion has completely transformed our boutique's inventory. Their sarees feature unparalleled fabric quality and modern designer motifs that our luxury clients snap up immediately. Order delivery is fast and secure.",
+      quote: "Jina Fashion has completely transformed our boutique's inventory. Their Kurties feature unparalleled fabric quality and modern designer motifs that our luxury clients snap up immediately. Order delivery is fast and secure.",
       author: "Anjali Gupta",
       role: "Founder, Srishti Boutique",
       city: "New Delhi",
@@ -203,7 +203,7 @@ export default function Home({ navigate }: Props) {
                 For Modern Boutiques & Retailers
               </h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                At Jina Fashion, we believe ethnic wear is more than clothing, it's a reflection of culture, confidence, and individuality. Based in Kalbadevi, Mumbai, we manufacture premium women's ethnic wear that blends traditional craftsmanship with contemporary design.
+                At Jina Fashion, we believe ethnic wear is more than clothing, it's a reflection of culture, confidence, and individuality. Based in Lower Parel, Mumbai, we manufacture premium women's ethnic wear that blends traditional craftsmanship with contemporary design.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
                 Built on a family legacy spanning over 100 years in the garment industry, we combine generations of expertise with modern manufacturing to create collections that are elegant, comfortable, and made for today's women. Every piece reflects our commitment to quality, consistency, and lasting value. 
@@ -524,7 +524,7 @@ export default function Home({ navigate }: Props) {
               <span className="italic text-brand-accent font-normal">Premium Indian Wear</span>
             </h2>
             <p className="text-sm text-neutral-300 leading-relaxed max-w-xl mx-auto font-sans">
-              Ready to stock high-margin sarees, suits, and designer kurtas in your retail shop or boutique? Request a comprehensive printed catalog or connect directly with our Mumbai trade experts.
+              Ready to stock high-margin Cord Sets, Dupatta Sets, Kurties, Pant/Plazzo set, and Short Tops in your retail shop or boutique? Request a comprehensive printed catalog or connect directly with our Mumbai trade experts.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 max-w-md mx-auto">

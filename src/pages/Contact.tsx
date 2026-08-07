@@ -408,7 +408,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
-                  <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Kalbadevi / Lower Parel</p>
+                  <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Lower Parel</p>
                 </div>
               </div>
               <p className="text-xs text-body-custom font-sans leading-relaxed">
@@ -436,7 +436,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
-                <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Kalbadevi / Lower Parel</p>
+                <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Lower Parel</p>
               </div>
             </div>
             <p className="text-xs text-body-custom font-sans leading-relaxed">

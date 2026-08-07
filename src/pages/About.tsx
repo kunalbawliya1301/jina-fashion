@@ -46,7 +46,7 @@ export default function About({ navigate }: Props) {
                 Ladies Ethnic Wear Manufacturing
               </h2>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
-                Established in 2021 in the vibrant textile hub of Kalbadevi, Mumbai, <strong>JINA Fashion</strong> is a manufacturer of premium ladies ethnic wear, dedicated to creating elegant designs that celebrate tradition with a contemporary touch.
+                Established in 2021 in the vibrant textile hub of Lower Parel, Mumbai, <strong>JINA Fashion</strong> is a manufacturer of premium ladies ethnic wear, dedicated to creating elegant designs that celebrate tradition with a contemporary touch.
               </p>
               <p className="text-sm sm:text-base text-body-custom leading-relaxed font-sans">
                 Founded by a third-generation entrepreneur, JINA Fashion proudly carries forward a family legacy that spans over a century. The journey began more than 100 years ago with a small retail store established by his grandfather in Lower Parel, Mumbai. Over the years, the family expanded its presence into the wholesale garment business under the leadership of his father and brother, building a strong reputation for quality, trust, and customer relationships.
@@ -54,7 +54,7 @@ export default function About({ navigate }: Props) {
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border-custom">
                 {[
                   ['100+ Yrs', 'Family Legacy'],
-                  ['2021', 'Kalbadevi Studio'],
+                  ['2021', 'Lower Parel Showroom'],
                   ['Mumbai', 'HQ Manufacturing'],
                 ].map(([val, label]) => (
                   <div key={label} className="space-y-1">
