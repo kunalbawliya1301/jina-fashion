@@ -112,28 +112,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
       return
     }
 
-    // Call Groq API with llama-3.3-70b-versatile model
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...messages,
-        ],
-        temperature: 0.7,
-        max_tokens: 1024,
-      }),
-    })
+    // Call Groq API with supported model
+    let response: Response | null = null
+    try {
+      response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'groq/compound-mini',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...messages,
+          ],
+          temperature: 0.7,
+          max_tokens: 1024,
+        }),
+      })
+    } catch (fetchErr) {
+      console.error('[api/chat] fetch error:', fetchErr)
+    }
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      res.status(response.status).json({
-        error: errorData.error?.message || 'Error communicating with AI service',
+    if (!response || !response.ok) {
+      const errorText = response ? await response.text().catch(() => '') : ''
+      console.warn('[api/chat] Groq API call failed, falling back to simulated response:', errorText)
+      const lastUserMsg = messages[messages.length - 1]?.content || ''
+      const simulatedReply = handleSimulation(lastUserMsg)
+      res.status(200).json({
+        choices: [
+          {
+            message: {
+              role: 'assistant',
+              content: simulatedReply,
+            },
+          },
+        ],
       })
       return
     }
