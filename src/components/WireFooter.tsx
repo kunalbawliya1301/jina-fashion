@@ -121,7 +121,7 @@ export default function WireFooter({ navigate }: Props) {
             <ul className="space-y-2.5 sm:space-y-3 font-sans text-xs text-body-custom">
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">HQ:</span>
-                <span>Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013</span>
+                <span>Gala No. 304, 3rd Floor,<br />Omgopal Industrial Estate,<br />Garage Gully, Dadar West,<br />Mumbai - 400028</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-secondary-accent font-semibold select-none shrink-0">Tel:</span>
