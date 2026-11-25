@@ -25,8 +25,8 @@ Wholesale Terms, MOQs & Policies:
 - Return/Exchange Policy: Returns accepted within 7 days of delivery for verified manufacturing flaws or transit damage.
 
 Contact & Location Details:
-- Business Address: Room No.30, Building No.2, Fruitwala Building Delisle Road, NM Joshi Marg, Mumbai, Maharashtra 400013
-- Google Maps Location: https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6
+- Business Address: Gala No. 304, 3rd Floor, Omgopal Industrial Estate, Garage Gully, Dadar West, Mumbai - 400028
+- Google Maps Location: https://maps.google.com/?q=Gala+No.+304,+3rd+Floor,+Omgopal+Industrial+Estate,+Garage+Gully,+Dadar+West,+Mumbai+400028
 - Phone Numbers: +91 9967998080 / +91 9892028161
 - WhatsApp Number: +91 9967998080 (https://wa.me/919967998080)
 - Email: order.jinafashion@gmail.com
@@ -69,8 +69,8 @@ Would you like to connect directly with our Mumbai sales team on WhatsApp (+91 9
 - **WhatsApp**: [+91 9967998080](https://wa.me/919967998080)
 - **Phone**: +91 9967998080 / +91 9892028161
 - **Email**: [order.jinafashion@gmail.com](mailto:order.jinafashion@gmail.com)
-- **Business Address**: Room No.30, Building No.2, Fruitwala Building Delisle Road, NM Joshi Marg, Mumbai, Maharashtra 400013
-- **Google Maps**: [View Location](https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6)
+- **Business Address**: Gala No. 304, 3rd Floor, Omgopal Industrial Estate, Garage Gully, Dadar West, Mumbai - 400028
+- **Google Maps**: [View Location](https://maps.google.com/?q=Gala+No.+304,+3rd+Floor,+Omgopal+Industrial+Estate,+Garage+Gully,+Dadar+West,+Mumbai+400028)
 - **Working Hours**: Mon - Sat: 10:00 AM - 7:00 PM (IST)`
   }
 
