@@ -110,7 +110,7 @@ export async function sendInquiryEmails(data: ContactEmailData): Promise<void> {
       </div>
 
       <div style="margin-top: 24px; text-align: center; font-size: 11px; color: #a0aec0; border-top: 1px solid #edf2f7; padding-top: 16px;">
-        Jina Fashion • 402, Senapati Bapat Marg, Lower Parel, Mumbai, MH 400013
+        Jina Fashion • Gala No. 304, 3rd Floor, Omgopal Industrial Estate, Garage Gully, Dadar West, Mumbai - 400028
       </div>
     </div>
   `
