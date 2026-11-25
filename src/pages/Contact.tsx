@@ -43,7 +43,7 @@ export default function Contact() {
   const contactItems = [
     {
       label: 'ADDRESS',
-      value: 'Room No.30, Building No.2, Fruitwala Building Delisle Road, NM Joshi Marg, Mumbai, Maharashtra 400013',
+      value: 'Gala No. 304, 3rd Floor, Omgopal Industrial Estate, Garage Gully, Dadar West, Mumbai - 400028',
       svg: (
         <svg className="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -390,7 +390,7 @@ export default function Contact() {
           <div className="relative h-72 sm:h-96 lg:h-[450px] w-full overflow-hidden">
             <iframe
               title="Jina Fashion Mumbai HQ Google Map"
-              src="https://maps.google.com/maps?q=Fruitwala+Building+NM+Joshi+Marg+Delisle+Rd+Mumbai+400013&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=Gala+No.+304,+3rd+Floor,+Omgopal+Industrial+Estate,+Garage+Gully,+Dadar+West,+Mumbai+400028&t=&z=16&ie=UTF8&iwloc=&output=embed"
               className="w-full h-full border-0 contrast-[105%]"
               allowFullScreen
               loading="lazy"
@@ -408,14 +408,14 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
-                  <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Lower Parel</p>
+                  <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Dadar West</p>
                 </div>
               </div>
               <p className="text-xs text-body-custom font-sans leading-relaxed">
-                Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013
+                Gala No. 304, 3rd Floor,<br />Omgopal Industrial Estate,<br />Garage Gully, Dadar West,<br />Mumbai - 400028
               </p>
               <a
-                href="https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6"
+                href="https://maps.google.com/?q=Gala+No.+304,+3rd+Floor,+Omgopal+Industrial+Estate,+Garage+Gully,+Dadar+West,+Mumbai+400028"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-block w-full text-center bg-primary hover:bg-primary-hover text-surface py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-[8px] transition-colors cursor-pointer shadow-xs"
@@ -436,14 +436,14 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="font-display text-base text-primary font-normal">Visit Our Mumbai HQ</h4>
-                <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Lower Parel</p>
+                <p className="text-[10px] text-muted-custom font-sans uppercase tracking-wider">Dadar West</p>
               </div>
             </div>
             <p className="text-xs text-body-custom font-sans leading-relaxed">
-              Room No.30, Bldg 2, Fruitwala Bldg Delisle Rd, NM Joshi Marg, Mumbai 400013
+              Gala No. 304, 3rd Floor,<br />Omgopal Industrial Estate,<br />Garage Gully, Dadar West,<br />Mumbai - 400028
             </p>
             <a
-              href="https://maps.app.goo.gl/oph9eQ7fwpS5eMVZ6"
+              href="https://maps.google.com/?q=Gala+No.+304,+3rd+Floor,+Omgopal+Industrial+Estate,+Garage+Gully,+Dadar+West,+Mumbai+400028"
               target="_blank"
               rel="noreferrer"
               className="inline-block w-full text-center bg-primary hover:bg-primary-hover text-surface py-3 text-xs font-bold tracking-widest uppercase rounded-[10px] transition-colors cursor-pointer shadow-xs"
